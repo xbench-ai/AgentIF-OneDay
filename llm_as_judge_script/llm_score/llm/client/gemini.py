@@ -387,4 +387,4 @@ class GeminiClient(BaseLLMClient):
                 contents.append(error_msg)
     
     def get_model_name(self) -> str:
-        return f"Gemini-{self.model}"
+        return self.model

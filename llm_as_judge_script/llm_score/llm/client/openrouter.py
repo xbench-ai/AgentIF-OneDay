@@ -14,16 +14,6 @@ from ...logging_config import get_logger
 
 logger = get_logger(__name__)
 
-# OpenRouter model name mapping
-OPENROUTER_MODEL_MAPPING = {
-    "OpenRouter-Gemini-3.0-Pro": "google/gemini-3-pro-preview",
-    "OpenRouter-Gemini-2.5-Flash": "google/gemini-2.5-flash",
-    "OpenRouter-Gemini-2.5-Pro": "google/gemini-2.5-pro",
-    "OpenRouter-GPT-5.1": "openai/gpt-5.1",
-    "OpenRouter-GPT-4o": "openai/gpt-4o",
-    "OpenRouter-GPT-4o-Mini": "openai/gpt-4o-mini",
-}
-
 
 class OpenRouterClient(BaseLLMClient):
     """OpenRouter Client Implementation, using OpenAI Compatible API"""
@@ -391,4 +381,4 @@ class OpenRouterClient(BaseLLMClient):
             })
     
     def get_model_name(self) -> str:
-        return f"OpenRouter-{self.model}"
+        return f"openrouter/{self.model}"
