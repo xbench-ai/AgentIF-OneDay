@@ -253,7 +253,7 @@ class AsyncScorer:
         # Check if grounding is enabled
         settings = get_settings()
         use_grounding = False
-        if task.model_name.startswith("Gemini") and settings.enable_google_search_grounding:
+        if task.model_name.startswith("gemini-") and settings.enable_google_search_grounding:
             use_grounding = True
         
         # Get answer text

@@ -26,6 +26,7 @@ from .office_parser import OfficeParser
 from .text_parser import TextParser
 from .notebook_parser import NotebookParser
 from .archive_parser import ArchiveParser
+from .subtitle_parser import SubtitleParser
 
 
 class AttachmentParser:
@@ -40,6 +41,7 @@ class AttachmentParser:
         self.text_parser = TextParser()
         self.notebook_parser = NotebookParser()
         self.archive_parser = ArchiveParser(attachment_parser=self)
+        self.subtitle_parser = SubtitleParser()
         
         # Build supported extension mapping
         self.supported_extensions = {}
@@ -63,6 +65,10 @@ class AttachmentParser:
         # Add archive formats
         for ext in ArchiveParser.SUPPORTED_FORMATS:
             self.supported_extensions[ext] = self._parse_archive
+        
+        # Add subtitle formats
+        for ext in SubtitleParser.SUPPORTED_FORMATS:
+            self.supported_extensions[ext] = self._parse_subtitle
         
         # Add HTML formats (added last, highest priority)
         for ext in HTMLParser.SUPPORTED_FORMATS:
@@ -166,6 +172,10 @@ class AttachmentParser:
         """Parse archive file"""
         return await self.archive_parser.parse_archive(file_data, file_path, recursion_depth=0)
     
+    async def _parse_subtitle(self, file_data: bytes, file_path: str) -> str:
+        """Parse subtitle file"""
+        return await self.subtitle_parser.parse_subtitle(file_data, file_path)
+    
     # Special methods for multimodal models
     async def parse_image_for_multimodal(self, file_data: bytes, file_path: str) -> Dict[str, Any]:
         """Parse image for multimodal models"""
@@ -208,6 +218,9 @@ class AttachmentParser:
         elif file_ext in TextParser.SUPPORTED_FORMATS:
             info['file_category'] = 'text'
             info['parser'] = 'TextParser'
+        elif file_ext in SubtitleParser.SUPPORTED_FORMATS:
+            info['file_category'] = 'subtitle'
+            info['parser'] = 'SubtitleParser'
         else:
             info['file_category'] = 'unknown'
             info['parser'] = None

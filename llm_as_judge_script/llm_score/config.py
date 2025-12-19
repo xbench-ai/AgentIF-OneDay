@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     chatgpt_base_url: str = "https://api.openai.com/v1"
     openrouter_api_key: str = ""
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
-    llm_default_model: str = "Gemini-2.5-Flash"
+    llm_default_model: str = "gemini-2.5-flash"
     llm_timeout: int = 180  # Timeout in seconds
     llm_max_retries: int = 3
     llm_retry_min_wait: int = 1  # LLM retry minimum wait time in seconds

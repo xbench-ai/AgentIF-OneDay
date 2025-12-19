@@ -24,19 +24,19 @@ from llm_score.llm.client.factory import LLMClientFactory
 # ============================================================
 
 # Input file paths
-QUESTIONS_FILE = "Data/jsonl_eng/sample_questions_10.jsonl"  # Questions file (JSONL format)
-ANSWERS_FILE = "Data/jsonl_eng/sample_answers_10.jsonl"      # Answers file (JSONL format)
+QUESTIONS_FILE = "Data/jsonl_eng/questions_104_1214.jsonl"  # Questions file (JSONL format)
+ANSWERS_FILE = "Data/jsonl_eng/answers_export_5agents_20251216_150401.jsonl"      # Answers file (JSONL format)
 
 # Output file path (timestamp will be added automatically, e.g., score_results_20251210_2217.jsonl)
-OUTPUT_FILE_PREFIX = "results"       # Output file prefix
+OUTPUT_FILE_PREFIX = "Data/Res/results"       # Output file prefix
 
 # LLM Model configuration
-# Model name format: <Prefix>-<ModelVersion>
-# Supported prefixes: Gemini, ChatGPT, OpenRouter
-# Examples: Gemini-2.5-Pro, ChatGPT-4o, ChatGPT-5.1-Pro, OpenRouter-GPT-4o
+# Model name format: Use official model names with prefix
+# Supported prefixes: gemini-, gpt-, openrouter/
+# Examples: gemini-3-flash-preview, gpt-4o, openrouter/google/gemini-3-flash-preview
 # Any model name starting with these prefixes is supported (no predefined list)
 # Leave empty to use the default model from config file
-MODEL_NAME = "ChatGPT-5.2"
+MODEL_NAME = "openrouter/google/gemini-3-flash-preview"
 
 # Concurrency and retry configuration (leave empty to use default values from config file)
 MAX_CONCURRENT = None  # Maximum concurrent requests, e.g., 5
@@ -78,11 +78,15 @@ def list_available_models():
     """List example models (any model with valid prefix is supported)"""
     print("Example LLM models (any model with valid prefix is supported):")
     print("-" * 40)
-    print("Supported prefixes: Gemini, ChatGPT, OpenRouter")
-    print("\nPre-registered examples:")
-    for model in LLMClientFactory.get_available_models():
-        print(f"  - {model}")
-    print("\nYou can also use any other model name with these prefixes.")
+    print("Supported prefixes: gemini-, gpt-, openrouter/")
+    print("\nExamples:")
+    print("  - gemini-3-flash-preview")
+    print("  - gemini-2.5-pro")
+    print("  - gpt-4o")
+    print("  - gpt-5.1")
+    print("  - openrouter/google/gemini-3-flash-preview")
+    print("  - openrouter/openai/gpt-4o")
+    print("\nYou can use any official model name with these prefixes.")
 
 
 async def main():
@@ -117,11 +121,11 @@ async def main():
     model_name = MODEL_NAME or settings.llm_default_model
     
     # Validate model name format (must start with known prefix)
-    valid_prefixes = ("Gemini", "ChatGPT", "OpenRouter")
+    valid_prefixes = ("gemini-", "gpt-", "openrouter/")
     if not any(model_name.startswith(prefix) for prefix in valid_prefixes):
         print(f"Error: Invalid model name format: {model_name}")
         print(f"Model name must start with one of: {', '.join(valid_prefixes)}")
-        print(f"Examples: Gemini-2.5-Pro, ChatGPT-4o, OpenRouter-GPT-4o")
+        print(f"Examples: gemini-3-flash-preview, gpt-4o, openrouter/google/gemini-3-flash-preview")
         return 1
     
     # Determine concurrency and retry count

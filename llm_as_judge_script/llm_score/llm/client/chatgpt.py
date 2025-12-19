@@ -293,4 +293,4 @@ class ChatGPTClient(BaseLLMClient):
             })
     
     def get_model_name(self) -> str:
-        return f"ChatGPT-{self.model}"
+        return self.model
