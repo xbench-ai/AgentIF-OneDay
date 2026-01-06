@@ -60,6 +60,19 @@ class OfficeParser:
         '.pdf': 'PDF Document'
     }
     
+    @staticmethod
+    def _estimate_tokens(text: str) -> int:
+        """
+        估算文本的token数量（约4个字符=1个token）
+        
+        Args:
+            text: 输入文本
+            
+        Returns:
+            估算的token数量
+        """
+        return len(text) // 4 + 1
+    
     @classmethod
     def is_supported(cls, file_path: str) -> bool:
         """Check if file is a supported Office format"""
@@ -292,8 +305,18 @@ class OfficeParser:
                 pass  # Ignore cleanup errors
     
     @classmethod
-    async def _parse_xlsx(cls, file_data: bytes, file_path: str) -> str:
-        """Parse XLSX file"""
+    async def _parse_xlsx(cls, file_data: bytes, file_path: str, max_tokens: int = 8000) -> str:
+        """
+        Parse XLSX file with dynamic row truncation based on token limit
+        
+        Args:
+            file_data: Excel file data
+            file_path: File path
+            max_tokens: Maximum tokens allowed (default: 8000)
+            
+        Returns:
+            Parsed Excel content as string
+        """
         if not EXCEL_SUPPORT:
             return "pandas and openpyxl libraries required to parse XLSX files"
         
@@ -310,25 +333,43 @@ class OfficeParser:
                     df = df.dropna(how='all').dropna(axis=1, how='all')
                     
                     if not df.empty:
-                        content.append(f"Worksheet: {sheet_name}")
+                        worksheet_header = f"Worksheet: {sheet_name}"
                         
-                        # Limit displayed rows and columns
-                        max_rows = 50
-                        max_cols = 10
+                        # Keep all columns - generate header with all column names
+                        column_names = list(df.columns)
+                        header_str = " | ".join(str(col) for col in column_names)
+                        header_line = f"Columns: {header_str}"
                         
-                        if len(df) > max_rows:
-                            df_display = df.head(max_rows)
-                            content.append(f"(Showing first {max_rows} rows, total {len(df)} rows)")
-                        else:
-                            df_display = df
+                        # Calculate tokens for worksheet header and column header
+                        current_tokens = cls._estimate_tokens(worksheet_header) + cls._estimate_tokens(header_line)
+                        sheet_content = [worksheet_header, header_line]
                         
-                        if len(df.columns) > max_cols:
-                            df_display = df_display.iloc[:, :max_cols]
-                            content.append(f"(Showing first {max_cols} columns, total {len(df.columns)} columns)")
+                        # Add rows dynamically based on token limit
+                        rows_added = 0
+                        total_rows = len(df)
                         
-                        # Convert to string, handle NaN values
-                        df_str = df_display.fillna('').to_string(index=False)
-                        content.append(df_str)
+                        for idx, row in df.iterrows():
+                            # Convert row to string format
+                            row_values = [str(val) if pd.notna(val) else '' for val in row]
+                            row_str = " | ".join(row_values)
+                            
+                            # Estimate tokens for this row
+                            row_tokens = cls._estimate_tokens(row_str)
+                            
+                            # Check if adding this row would exceed token limit
+                            if current_tokens + row_tokens > max_tokens:
+                                break
+                            
+                            sheet_content.append(row_str)
+                            current_tokens += row_tokens
+                            rows_added += 1
+                        
+                        # Add truncation notice if needed
+                        if rows_added < total_rows:
+                            truncation_notice = f"(Showing first {rows_added} rows out of {total_rows} total rows due to token limit)"
+                            sheet_content.append(truncation_notice)
+                        
+                        content.extend(sheet_content)
                         content.append("")
                     else:
                         content.append(f"Worksheet: {sheet_name} (empty)")
@@ -345,8 +386,18 @@ class OfficeParser:
             return f"Failed to parse XLSX file: {str(e)}"
     
     @classmethod
-    async def _parse_xls(cls, file_data: bytes, file_path: str) -> str:
-        """Parse XLS file (legacy Excel format)"""
+    async def _parse_xls(cls, file_data: bytes, file_path: str, max_tokens: int = 8000) -> str:
+        """
+        Parse XLS file (legacy Excel format) with dynamic row truncation based on token limit
+        
+        Args:
+            file_data: Excel file data
+            file_path: File path
+            max_tokens: Maximum tokens allowed (default: 8000)
+            
+        Returns:
+            Parsed Excel content as string
+        """
         if not EXCEL_SUPPORT:
             return "pandas and xlrd libraries required to parse XLS files"
         
@@ -363,25 +414,43 @@ class OfficeParser:
                     df = df.dropna(how='all').dropna(axis=1, how='all')
                     
                     if not df.empty:
-                        content.append(f"Worksheet: {sheet_name}")
+                        worksheet_header = f"Worksheet: {sheet_name}"
                         
-                        # Limit displayed rows and columns
-                        max_rows = 50
-                        max_cols = 10
+                        # Keep all columns - generate header with all column names
+                        column_names = list(df.columns)
+                        header_str = " | ".join(str(col) for col in column_names)
+                        header_line = f"Columns: {header_str}"
                         
-                        if len(df) > max_rows:
-                            df_display = df.head(max_rows)
-                            content.append(f"(Showing first {max_rows} rows, total {len(df)} rows)")
-                        else:
-                            df_display = df
+                        # Calculate tokens for worksheet header and column header
+                        current_tokens = cls._estimate_tokens(worksheet_header) + cls._estimate_tokens(header_line)
+                        sheet_content = [worksheet_header, header_line]
                         
-                        if len(df.columns) > max_cols:
-                            df_display = df_display.iloc[:, :max_cols]
-                            content.append(f"(Showing first {max_cols} columns, total {len(df.columns)} columns)")
+                        # Add rows dynamically based on token limit
+                        rows_added = 0
+                        total_rows = len(df)
                         
-                        # Convert to string, handle NaN values
-                        df_str = df_display.fillna('').to_string(index=False)
-                        content.append(df_str)
+                        for idx, row in df.iterrows():
+                            # Convert row to string format
+                            row_values = [str(val) if pd.notna(val) else '' for val in row]
+                            row_str = " | ".join(row_values)
+                            
+                            # Estimate tokens for this row
+                            row_tokens = cls._estimate_tokens(row_str)
+                            
+                            # Check if adding this row would exceed token limit
+                            if current_tokens + row_tokens > max_tokens:
+                                break
+                            
+                            sheet_content.append(row_str)
+                            current_tokens += row_tokens
+                            rows_added += 1
+                        
+                        # Add truncation notice if needed
+                        if rows_added < total_rows:
+                            truncation_notice = f"(Showing first {rows_added} rows out of {total_rows} total rows due to token limit)"
+                            sheet_content.append(truncation_notice)
+                        
+                        content.extend(sheet_content)
                         content.append("")
                     else:
                         content.append(f"Worksheet: {sheet_name} (empty)")
