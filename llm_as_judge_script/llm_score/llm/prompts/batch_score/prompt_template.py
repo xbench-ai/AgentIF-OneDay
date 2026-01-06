@@ -10,7 +10,8 @@ def build_batch_score_prompt(
     score_criteria: list = None,
     use_grounding: bool = False,
     reference_answer_text: str = "",
-    reference_answer_attachments: list = None
+    reference_answer_attachments: list = None,
+    web_search_facts: str = ""
 ) -> str:
     """
     Build the prompt for LLM batch scoring
@@ -24,6 +25,7 @@ def build_batch_score_prompt(
         use_grounding: Whether to enable Google Search grounding for fact-checking
         reference_answer_text: Reference answer description
         reference_answer_attachments: List of reference answer attachments [{"filename": "", "content": ""}]
+        web_search_facts: Pre-fetched web search facts (used in fallback mode)
     
     Returns:
         str: Complete prompt
@@ -91,7 +93,15 @@ The reference answer is the standard answer used to help judge whether the answe
 #### Reference Attachment {i}: {attachment.get('filename', f'Attachment{i}')}
 {attachment.get('content', '')}""")
     
-    # 7. Scoring criteria
+    # 7. Web search facts (if provided)
+    if web_search_facts:
+        prompt_parts.append("""
+## Pre-fetched Web Search Facts
+The following information was obtained through web search to help verify facts in the question and answer:
+""")
+        prompt_parts.append(web_search_facts)
+    
+    # 8. Scoring criteria
     if score_criteria:
         prompt_parts.append("\n## Scoring Criteria")
         for i, criterion in enumerate(score_criteria, 1):
@@ -99,7 +109,7 @@ The reference answer is the standard answer used to help judge whether the answe
 ### Criterion {i} (ID: {criterion.get('criterion_id', '')}, Score: {criterion.get('score', 0)})
 {criterion.get('content', '')}""")
     
-    # 8. Output requirements
+    # 9. Output requirements
     prompt_parts.append("""
 ## Scoring Requirements
 Please score the above answer according to each scoring criterion, providing for each criterion:

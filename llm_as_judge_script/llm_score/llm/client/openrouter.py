@@ -15,6 +15,16 @@ from ...logging_config import get_logger
 logger = get_logger(__name__)
 
 
+class PayloadTooLargeError(Exception):
+    """Exception raised when API returns 413 Payload Too Large"""
+    pass
+
+
+class ContextLengthExceededError(Exception):
+    """Exception raised when request exceeds model's context length"""
+    pass
+
+
 class OpenRouterClient(BaseLLMClient):
     """OpenRouter Client Implementation, using OpenAI Compatible API"""
     
@@ -46,11 +56,8 @@ class OpenRouterClient(BaseLLMClient):
             settings = get_settings()
             use_web_search = settings.enable_google_search_grounding
         
-        # Build model name
+        # Build model name (keep original model name, don't add :online suffix)
         model_name = self.model
-        if use_web_search:
-            model_name = f"{self.model}:online"
-            logger.info(f"Web search enabled, using model: {model_name}")
         
         # Build base payload
         payload = {
@@ -62,6 +69,19 @@ class OpenRouterClient(BaseLLMClient):
         if request.max_tokens:
             payload["max_tokens"] = request.max_tokens
         
+        # Add web search via extra_body if enabled
+        if use_web_search:
+            settings = get_settings()
+            payload["extra_body"] = {
+                "plugins": [
+                    {
+                        "id": "web",
+                        "max_results": settings.web_search_max_results
+                    }
+                ]
+            }
+            logger.info(f"Web search enabled with max_results={settings.web_search_max_results}, using model: {model_name}")
+        
         # Execute API call
         settings = get_settings()
         timeout = max(settings.llm_timeout, 180)
@@ -70,6 +90,8 @@ class OpenRouterClient(BaseLLMClient):
             logger.info(f"Preparing to call OpenRouter API:")
             logger.info(f"  - model: {model_name}")
             logger.info(f"  - web_search: {use_web_search}")
+            if use_web_search:
+                logger.info(f"  - web_search_max_results: {settings.web_search_max_results}")
             
             response = await self.client.chat.completions.create(
                 **payload,
@@ -84,7 +106,17 @@ class OpenRouterClient(BaseLLMClient):
             error_type = type(e).__name__
             logger.error(f"OpenRouter API call failed [{error_type}]: {error_msg}")
             
-            if "401" in error_msg or "Unauthorized" in error_msg:
+            # Check for 413 Payload Too Large error
+            if "413" in error_msg or "payload too large" in error_msg.lower():
+                raise PayloadTooLargeError(f"Request payload too large: {error_msg}")
+            # Check for 400 error with context length exceeded (especially when output token is 1000000)
+            elif "400" in error_msg and ("context length" in error_msg.lower() or "maximum context" in error_msg.lower()):
+                # Check if it mentions large output token count (e.g., 1000000)
+                if "1000000 in the output" in error_msg or "1000000" in error_msg:
+                    raise ContextLengthExceededError(f"Context length exceeded with large output token request: {error_msg}")
+                else:
+                    raise Exception(f"OpenRouter API call failed [{error_type}]: {error_msg}")
+            elif "401" in error_msg or "Unauthorized" in error_msg:
                 raise Exception(f"OpenRouter API authentication failed, please check OPENROUTER_API_KEY configuration: {error_msg}")
             elif "404" in error_msg or "Not Found" in error_msg:
                 raise Exception(f"OpenRouter API endpoint not found, please check OPENROUTER_BASE_URL configuration ({self.base_url}): {error_msg}")

@@ -25,7 +25,7 @@ from llm_score.llm.client.factory import LLMClientFactory
 
 # Input file paths
 QUESTIONS_FILE = "Data/jsonl_eng/questions_104_1214.jsonl"  # Questions file (JSONL format)
-ANSWERS_FILE = "Data/jsonl_eng/answers_export_5agents_20251216_150401.jsonl"      # Answers file (JSONL format)
+ANSWERS_FILE = "Data/chatgpt_agent_2601_1-agent_results.jsonl"      # Answers file (JSONL format)
 
 # Output file path (timestamp will be added automatically, e.g., score_results_20251210_2217.jsonl)
 OUTPUT_FILE_PREFIX = "Data/Res/results"       # Output file prefix
@@ -36,7 +36,7 @@ OUTPUT_FILE_PREFIX = "Data/Res/results"       # Output file prefix
 # Examples: gemini-3-flash-preview, gpt-4o, openrouter/google/gemini-3-flash-preview
 # Any model name starting with these prefixes is supported (no predefined list)
 # Leave empty to use the default model from config file
-MODEL_NAME = "openrouter/google/gemini-3-flash-preview"
+MODEL_NAME = "openrouter/google/gemini-3-pro-preview"
 
 # Concurrency and retry configuration (leave empty to use default values from config file)
 MAX_CONCURRENT = None  # Maximum concurrent requests, e.g., 5
@@ -48,7 +48,7 @@ ATTACHMENT_BASE_PATH = "Attachments"
 # Question filter configuration
 # Set to None or [] to score all questions
 # Set to a list of question_ids to score only specific questions, e.g., ["taskif_6", "taskif_7"]
-QUESTION_IDS = None
+QUESTION_IDS = []
 
 # Agent filter configuration
 # Set to None or [] to score all agents' answers

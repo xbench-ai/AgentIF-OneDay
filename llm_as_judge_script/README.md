@@ -279,43 +279,6 @@ ANSWERS_FILE = "sample/sample_answers_10.jsonl"
 python -m llm_score.main
 ```
 
-3. **Compare results** (optional):
-
-After running, you can compare your output with `sample/sample_results_10.jsonl` to verify the scoring behavior. The sample results file contains scoring outputs for all criteria across all 10 question-answer pairs, showing:
-- Whether each criterion was satisfied (`satisfied: true/false`)
-- The reasoning provided by the LLM judge
-- The scoring method used
-
-### Sample Data Overview
-
-The sample data includes diverse question types:
-
-- **Quantum Computing Tasks**: Resource estimation, algorithm implementation
-- **Web Development**: GUI updates, HTML generation
-- **Data Extraction**: Paper data extraction, scholar information collection
-- **Research Tasks**: Market research, paper compilation
-- **Creative Tasks**: Image generation, marketing material design
-- **Analysis Tasks**: Cost analysis, upgrade planning
-
-Each sample question includes:
-- Complete question description
-- Scoring criteria with positive and negative points
-- Reference answer descriptions
-- Attachment file references (if applicable)
-
-Each sample answer includes:
-- Agent response text
-- Attachment file references (if applicable)
-- Proper JSONL formatting
-
-The sample results file demonstrates:
-- Expected output format for scoring results
-- How different criteria are evaluated
-- Examples of satisfied and unsatisfied criteria
-- Reasoning patterns from the LLM judge
-
-**Note**: The sample data is designed for testing the scoring pipeline. For production use, replace with your actual questions and answers files.
-
 ### Example Output
 
 ```

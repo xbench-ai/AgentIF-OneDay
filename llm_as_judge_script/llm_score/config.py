@@ -8,7 +8,7 @@ from pydantic import ConfigDict
 class Settings(BaseSettings):
     """Application Settings"""
     model_config = ConfigDict(
-        env_file=[".env", "backend/.env"],  # Prioritize reading .env from root directory
+        env_file=[".env"],  # Prioritize reading .env from root directory
         case_sensitive=False,
         extra="ignore",  # Ignore extra environment variables
         protected_namespaces=()  # Allow fields starting with model_
@@ -36,13 +36,14 @@ class Settings(BaseSettings):
     llm_retry_min_wait: int = 1  # LLM retry minimum wait time in seconds
     llm_retry_max_wait: int = 30  # LLM retry maximum wait time in seconds
     llm_max_concurrent: int = 5  # Maximum concurrent requests
+    llm_max_tokens: int = 600000  # Maximum tokens for LLM requests
     
     # Google Search Grounding configuration (only for Gemini models)
     enable_google_search_grounding: bool = False
     
     # Web search configuration
     enable_web_search: bool = True
-    web_search_max_results: int = 5
+    web_search_max_results: int = 3
     web_fetch_timeout: int = 30
     
     # Local attachment path configuration
@@ -55,6 +56,11 @@ class Settings(BaseSettings):
     
     # HTML content length limit
     max_html_content_length: int = 100000
+    
+    # Web Search Fallback configuration
+    web_search_fallback_enabled: bool = True
+    web_search_fallback_model: str = "openrouter/google/gemini-3-flash-preview"
+    web_search_fallback_max_length: int = 10000
 
 
 # Global settings instance

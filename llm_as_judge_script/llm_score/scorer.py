@@ -12,6 +12,8 @@ from .config import get_settings
 from .logging_config import get_logger
 from .data_loader import Question, Answer, ScoreResult, DataLoader, AttachmentLoader
 from .llm.client.factory import LLMClientFactory
+from .llm.client.openrouter import PayloadTooLargeError, ContextLengthExceededError
+from .llm.client.web_search import WebSearchClient
 from .llm.schemas.types import LLMRequest, LLMMessage, ImageAttachment
 from .llm.prompts.batch_score.prompt_template import build_batch_score_prompt
 from .llm.utils.attachment_parser import AttachmentParser, ParsedAttachmentResult
@@ -63,6 +65,7 @@ class AsyncScorer:
         self.max_retries = max_retries
         self.attachment_loader = AttachmentLoader(attachment_base_path)
         self.attachment_parser = AttachmentParser()
+        self.web_search_client = WebSearchClient()
         self.progress = ScoringProgress()
         self._semaphore: Optional[asyncio.Semaphore] = None
         self._write_lock: Optional[asyncio.Lock] = None  # File write lock
@@ -234,6 +237,8 @@ class AsyncScorer:
         Returns:
             List of scoring results
         """
+        settings = get_settings()
+        
         # Get attachment content
         question_attachments = await self._get_question_attachments(task.question)
         # Answer attachments now returns both text and image attachments
@@ -251,13 +256,79 @@ class AsyncScorer:
         ]
         
         # Check if grounding is enabled
-        settings = get_settings()
         use_grounding = False
         if task.model_name.startswith("gemini-") and settings.enable_google_search_grounding:
             use_grounding = True
         
         # Get answer text
         answer_text = task.answer.content.get('text', '') if isinstance(task.answer.content, dict) else str(task.answer.content)
+        
+        # Try normal scoring first
+        try:
+            return await self._do_score_with_llm(
+                task=task,
+                question_attachments=question_attachments,
+                answer_text=answer_text,
+                answer_text_attachments=answer_text_attachments,
+                answer_image_attachments=answer_image_attachments,
+                reference_answer_attachments=reference_answer_attachments,
+                score_criteria=score_criteria,
+                use_grounding=use_grounding
+            )
+        except (PayloadTooLargeError, ContextLengthExceededError) as e:
+            # If 413 error or context length exceeded, and fallback is enabled, try fallback approach
+            if settings.web_search_fallback_enabled:
+                error_type = "Payload too large (413)" if isinstance(e, PayloadTooLargeError) else "Context length exceeded (400)"
+                logger.warning(
+                    f"[WEB_SEARCH_FALLBACK] {error_type} detected for {task.question.question_id} - {task.answer.agent_name}"
+                )
+                logger.info(
+                    f"[WEB_SEARCH_FALLBACK] Activating web search fallback strategy for {task.question.question_id} - {task.answer.agent_name}"
+                )
+                return await self._do_score_with_fallback(
+                    task=task,
+                    question_attachments=question_attachments,
+                    answer_text=answer_text,
+                    answer_text_attachments=answer_text_attachments,
+                    answer_image_attachments=answer_image_attachments,
+                    reference_answer_attachments=reference_answer_attachments,
+                    score_criteria=score_criteria
+                )
+            else:
+                # Fallback disabled, re-raise the error
+                logger.warning(f"Web search fallback is disabled, re-raising error: {e}")
+                raise
+    
+    async def _do_score_with_llm(
+        self,
+        task: ScoringTask,
+        question_attachments: List[Dict[str, str]],
+        answer_text: str,
+        answer_text_attachments: List[Dict[str, str]],
+        answer_image_attachments: List[ImageAttachment],
+        reference_answer_attachments: List[Dict[str, str]],
+        score_criteria: List[Dict[str, Any]],
+        use_grounding: bool,
+        web_search_facts: str = ""
+    ) -> List[ScoreResult]:
+        """
+        Execute scoring with LLM call
+        
+        Args:
+            task: Scoring task
+            question_attachments: Question attachments
+            answer_text: Answer text
+            answer_text_attachments: Answer text attachments
+            answer_image_attachments: Answer image attachments
+            reference_answer_attachments: Reference answer attachments
+            score_criteria: Scoring criteria
+            use_grounding: Whether to use web search grounding
+            web_search_facts: Pre-fetched web search facts (optional)
+            
+        Returns:
+            List of scoring results
+        """
+        settings = get_settings()
         
         # Build prompt
         prompt = build_batch_score_prompt(
@@ -268,7 +339,8 @@ class AsyncScorer:
             score_criteria=score_criteria,
             use_grounding=use_grounding,
             reference_answer_text=task.question.reference_answer_description,
-            reference_answer_attachments=reference_answer_attachments
+            reference_answer_attachments=reference_answer_attachments,
+            web_search_facts=web_search_facts
         )
         
         # Log if we have image attachments
@@ -280,9 +352,9 @@ class AsyncScorer:
             model_name=task.model_name,
             messages=[LLMMessage(role="user", content=prompt)],
             image_attachments=answer_image_attachments if answer_image_attachments else None,
-            max_tokens=100000,
+            max_tokens=settings.llm_max_tokens,
             temperature=0.1,
-            use_grounding=use_grounding if use_grounding else None
+            use_grounding=use_grounding
         )
         
         llm_response = await LLMClientFactory.call_with_attachments(llm_request)
@@ -312,6 +384,76 @@ class AsyncScorer:
                 reasoning=llm_criterion_result.get('reasoning', '') if llm_criterion_result else ''
             )
             results.append(score_result)
+        
+        return results
+    
+    async def _do_score_with_fallback(
+        self,
+        task: ScoringTask,
+        question_attachments: List[Dict[str, str]],
+        answer_text: str,
+        answer_text_attachments: List[Dict[str, str]],
+        answer_image_attachments: List[ImageAttachment],
+        reference_answer_attachments: List[Dict[str, str]],
+        score_criteria: List[Dict[str, Any]]
+    ) -> List[ScoreResult]:
+        """
+        Execute scoring with web search fallback
+        
+        First fetches facts via web search, then calls LLM without web_search plugin
+        
+        Args:
+            task: Scoring task
+            question_attachments: Question attachments
+            answer_text: Answer text
+            answer_text_attachments: Answer text attachments
+            answer_image_attachments: Answer image attachments
+            reference_answer_attachments: Reference answer attachments
+            score_criteria: Scoring criteria
+            
+        Returns:
+            List of scoring results
+        """
+        logger.info(
+            f"[WEB_SEARCH_FALLBACK] Step 1: Fetching web search facts for "
+            f"{task.question.question_id} - {task.answer.agent_name}"
+        )
+        
+        question_text = task.question.description or task.question.title
+        web_search_facts = await self.web_search_client.search_facts(
+            question_text=question_text,
+            answer_text=answer_text,
+            question_attachments=question_attachments,
+            answer_attachments=answer_text_attachments
+        )
+        
+        logger.info(
+            f"[WEB_SEARCH_FALLBACK] Step 2: Web search facts obtained ({len(web_search_facts)} chars) for "
+            f"{task.question.question_id} - {task.answer.agent_name}"
+        )
+        
+        # Step 2: Score with LLM without web_search plugin, but with pre-fetched facts
+        logger.info(
+            f"[WEB_SEARCH_FALLBACK] Step 3: Scoring with pre-fetched facts (web_search=False) for "
+            f"{task.question.question_id} - {task.answer.agent_name}"
+        )
+        
+        results = await self._do_score_with_llm(
+            task=task,
+            question_attachments=question_attachments,
+            answer_text=answer_text,
+            answer_text_attachments=answer_text_attachments,
+            answer_image_attachments=answer_image_attachments,
+            reference_answer_attachments=reference_answer_attachments,
+            score_criteria=score_criteria,
+            use_grounding=False,  # Disable web_search plugin
+            web_search_facts=web_search_facts
+        )
+        
+        logger.info(
+            f"[WEB_SEARCH_FALLBACK] Completed successfully for "
+            f"{task.question.question_id} - {task.answer.agent_name}"
+        )
         
         return results
     
