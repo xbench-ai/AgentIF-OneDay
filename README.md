@@ -1,5 +1,5 @@
 # AgentIF-OneDay
-[🌐 Website](https://xbench.org/agi/taskif) [🤗 Dataset](https://huggingface.co/datasets/xbench/AgentIF-OneDay) [**📄 Paper**](paper/AgentIF_OneDay_0117.pdf) 
+[🌐 Website](https://xbench.org/agi/agentif) [🤗 Dataset](https://huggingface.co/datasets/xbench/AgentIF-OneDay) [**📄 Paper**](paper/AgentIF_OneDay_0117.pdf) 
 
 **AgentIF-OneDay** is the inaugural benchmark in the AgentIF series by xbench. It evaluates AI Agents on their ability to autonomously complete tasks that represent a full day of human workload.
 
