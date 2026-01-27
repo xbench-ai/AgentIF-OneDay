@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern LLM Chat Client</title>
+  <style>
+    /*
+      A lightweight CSS layout inspired by the provided screenshots.
+
+      This stylesheet organises the page into a fixed‐width sidebar on the
+      left for configuration controls and a flexible chat area on the right.
+      Elements are kept simple and modern with subtle borders, rounded corners
+      and muted colours. Buttons use a single green hue similar to the
+      screenshots. Inputs respond to hover/focus states to improve
+      accessibility.
+    */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+      background: #f7f7f7;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Sidebar on the left */
+    .sidebar {
+      width: 320px;
+      background-color: #fafafa;
+      border-right: 1px solid #e0e0e0;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .group {
+      margin-bottom: 18px;
+    }
+
+    .group label,
+    .group span {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    .group input[type="text"],
+    .group input[type="password"],
+    .group textarea,
+    .group select,
+    .group input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background: white;
+    }
+
+    .group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .group input[type="range"] {
+      width: 100%;
+    }
+
+    .group input:disabled,
+    .group select:disabled,
+    .group textarea:disabled {
+      background: #eee;
+    }
+
+    button {
+      background-color: #5bbf5a;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      margin-top: 6px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .toggle-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .toggle-header input {
+      margin-right: 6px;
+    }
+
+    /* Chat area on the right */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .chat-display {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .message .role {
+      font-weight: 600;
+      margin-right: 4px;
+      text-transform: uppercase;
+    }
+
+    .message.user .role {
+      color: #0066cc;
+    }
+    .message.assistant .role {
+      color: #2a8c2e;
+    }
+
+    .message.error .role {
+      color: #d32f2f;
+    }
+
+    /* Input area */
+    .input-area {
+      display: flex;
+      padding: 12px;
+      background: #fafafa;
+      align-items: center;
+    }
+
+    .input-area textarea {
+      flex: 1;
+      padding: 8px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      resize: none;
+      min-height: 45px;
+      margin-right: 8px;
+    }
+
+    .input-area button {
+      width: 80px;
+      /* add spacing between buttons */
+      margin-left: 4px;
+    }
+
+    /* Collapsible group body */
+    .group-body {
+      display: none;
+      margin-top: 6px;
+    }
+
+    .group-body.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <!-- API Configuration -->
+      <div class="group">
+        <h2>API Configuration</h2>
+        <label for="apiKey">API Key:</label>
+        <input type="password" id="apiKey" placeholder="Enter your API key" />
+        <button id="connectBtn">Connect</button>
+      </div>
+
+      <!-- Model Selection -->
+      <div class="group">
+        <h2>Model Selection</h2>
+        <label for="modelSelect">Model:</label>
+        <select id="modelSelect">
+          <option value="gpt-4o">GPT‑4o</option>
+          <option value="o1">o1</option>
+          <option value="o1-pro">o1‑pro</option>
+          <option value="o3">o3</option>
+          <option value="gemini-2.5-pro">Gemini‑2.5‑pro</option>
+        </select>
+      </div>
+
+      <!-- Standard Parameters -->
+      <div class="group">
+        <div class="toggle-header">
+          <input type="checkbox" id="stdToggle" />
+          <label for="stdToggle">Standard Parameters</label>
+        </div>
+        <div class="group-body" id="stdBody">
+          <label for="temperature">Temperature:</label>
+          <input type="number" id="temperature" min="0" max="2" step="0.1" value="0.7" />
+
+          <label for="maxTokens">Max Tokens:</label>
+          <input type="number" id="maxTokens" min="1" max="32768" step="1" value="1024" />
+
+          <label for="topP">Top P:</label>
+          <input type="number" id="topP" min="0" max="1" step="0.05" value="1" />
+
+          <label for="freqPenalty">Frequency Penalty:</label>
+          <input type="number" id="freqPenalty" min="0" max="2" step="0.1" value="0" />
+
+          <label for="presPenalty">Presence Penalty:</label>
+          <input type="number" id="presPenalty" min="0" max="2" step="0.1" value="0" />
+        </div>
+      </div>
+
+      <!-- Thinking Parameters -->
+      <div class="group">
+        <div class="toggle-header">
+          <input type="checkbox" id="thinkToggle" />
+          <label for="thinkToggle">Thinking Parameters</label>
+        </div>
+        <div class="group-body" id="thinkBody">
+          <label for="reasoningEffort">Reasoning Effort:</label>
+          <select id="reasoningEffort">
+            <option value="fast">fast</option>
+            <option value="medium" selected>medium</option>
+            <option value="slow">slow</option>
+          </select>
+
+          <label for="maxCompletion">Max Completion Tokens:</label>
+          <input type="number" id="maxCompletion" min="1" max="32768" value="2000" />
+        </div>
+      </div>
+
+      <!-- System Prompt -->
+      <div class="group">
+        <h2>System Prompt</h2>
+        <textarea id="systemPrompt">You are a helpful, concise assistant.</textarea>
+      </div>
+
+      <!-- Actions -->
+      <div class="group">
+        <h2>Actions</h2>
+        <button id="saveBtn">Save Transcript</button>
+        <button id="clearBtn">Clear Chat</button>
+      </div>
+    </div>
+
+    <div class="chat-area">
+      <div class="chat-display" id="chatDisplay"></div>
+      <div class="input-area">
+        <textarea id="userInput" placeholder="Type your message here..."></textarea>
+        <button id="sendBtn">Send</button>
+        <button id="stopBtn">Stop</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Maintains conversation state and handles interactions.
+    (function() {
+      const apiKeyInput   = document.getElementById('apiKey');
+      const connectBtn    = document.getElementById('connectBtn');
+      const modelSelect   = document.getElementById('modelSelect');
+      const systemPrompt  = document.getElementById('systemPrompt');
+      const stdToggle     = document.getElementById('stdToggle');
+      const stdBody       = document.getElementById('stdBody');
+      const thinkToggle   = document.getElementById('thinkToggle');
+      const thinkBody     = document.getElementById('thinkBody');
+      const sendBtn       = document.getElementById('sendBtn');
+      const stopBtn       = document.getElementById('stopBtn');
+      const userInput     = document.getElementById('userInput');
+      const chatDisplay   = document.getElementById('chatDisplay');
+      const saveBtn       = document.getElementById('saveBtn');
+      const clearBtn      = document.getElementById('clearBtn');
+
+      let apiKey = '';
+      let controller = null; // Abort controller for stopping requests
+      const messages = []; // conversation messages: {role: 'user'|'assistant'|'system', content: string}
+
+      // Handle connect button click
+      connectBtn.addEventListener('click', () => {
+        const key = apiKeyInput.value.trim();
+        if (!key) {
+          alert('Please enter your API key to connect.');
+          return;
+        }
+        apiKey = key;
+        connectBtn.textContent = 'Connected';
+        connectBtn.disabled = true;
+        apiKeyInput.disabled = true;
+      });
+
+      // Show/hide parameter groups based on toggles
+      stdToggle.addEventListener('change', () => {
+        stdBody.classList.toggle('active', stdToggle.checked);
+      });
+      thinkToggle.addEventListener('change', () => {
+        thinkBody.classList.toggle('active', thinkToggle.checked);
+      });
+
+      // Scroll chat display to the bottom
+      function scrollToBottom() {
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+      }
+
+      // Render a single message into the chat area
+      function addMessage(role, content) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', role);
+        const roleSpan = document.createElement('span');
+        roleSpan.classList.add('role');
+        roleSpan.textContent = role === 'user' ? 'USER' : role === 'assistant' ? 'ASSISTANT' : 'ERROR';
+        msgDiv.appendChild(roleSpan);
+        const contentSpan = document.createElement('span');
+        contentSpan.textContent = content;
+        msgDiv.appendChild(contentSpan);
+        chatDisplay.appendChild(msgDiv);
+        scrollToBottom();
+      }
+
+      // Clear the chat display and message history
+      function clearChat() {
+        chatDisplay.innerHTML = '';
+        messages.length = 0;
+      }
+
+      // Save transcript to a downloadable JSON file
+      function saveTranscript() {
+        if (messages.length === 0) {
+          alert('There is no conversation to save.');
+          return;
+        }
+        const transcript = {
+          timestamp: new Date().toISOString(),
+          model: modelSelect.value,
+          messages: []
+        };
+        // Always include system prompt as first message
+        transcript.messages.push({ role: 'system', content: systemPrompt.value });
+        // Copy conversation messages
+        messages.forEach(m => {
+          transcript.messages.push({ role: m.role, content: m.content });
+        });
+        const blob = new Blob([JSON.stringify(transcript, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `chat-transcript-${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      // Construct payload and call the selected LLM API
+      async function callLLM() {
+        const model = modelSelect.value;
+        const sysPrompt = systemPrompt.value;
+        // Prepare the messages list for API call: include system prompt as first message
+        const payloadMessages = [];
+        if (sysPrompt && sysPrompt.trim().length > 0) {
+          payloadMessages.push({ role: 'system', content: sysPrompt.trim() });
+        }
+        messages.forEach(m => payloadMessages.push({ role: m.role, content: m.content }));
+        // Parameter object
+        const params = {};
+        if (stdToggle.checked) {
+          params.temperature = parseFloat(document.getElementById('temperature').value);
+          params.max_tokens = parseInt(document.getElementById('maxTokens').value);
+          params.top_p = parseFloat(document.getElementById('topP').value);
+          params.frequency_penalty = parseFloat(document.getElementById('freqPenalty').value);
+          params.presence_penalty = parseFloat(document.getElementById('presPenalty').value);
+        }
+        if (thinkToggle.checked) {
+          // For demonstration we map reasoningEffort to a suffix property used by some APIs
+          const effort = document.getElementById('reasoningEffort').value;
+          params.reasoning_effort = effort;
+          params.max_output_tokens = parseInt(document.getElementById('maxCompletion').value);
+        }
+
+        // Build fetch request based on model vendor
+        let url = '';
+        let options = {};
+        const abortCtrl = new AbortController();
+        controller = abortCtrl;
+        if (model === 'gemini-2.5-pro') {
+          // Gemini (Google) model
+          if (!apiKey) {
+            throw new Error('API key required for Gemini models');
+          }
+          url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`;
+          // Gemini expects content structured differently
+          const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+          const systemInstruction = sysPrompt ? { parts: [{ text: sysPrompt.trim() }] } : null;
+          const contents = [];
+          if (lastUserMessage) {
+            contents.push({ parts: [{ text: lastUserMessage.content }] });
+          }
+          const body = {
+            contents: contents,
+            system_instruction: systemInstruction || undefined,
+            safety_settings: [
+              { category: 'HARM_CATEGORY_DANGEROUS', threshold: 'BLOCK_NONE' }
+            ]
+          };
+          if (params.max_output_tokens) body.generation_config = { max_output_tokens: params.max_output_tokens };
+          options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: abortCtrl.signal
+          };
+        } else {
+          // OpenAI models
+          if (!apiKey) {
+            throw new Error('API key required for OpenAI models');
+          }
+          url = 'https://api.openai.com/v1/chat/completions';
+          const body = {
+            model: model,
+            messages: payloadMessages,
+            ...params
+          };
+          options = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify(body),
+            signal: abortCtrl.signal
+          };
+        }
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+          }
+          const data = await response.json();
+          let reply = '';
+          if (model === 'gemini-2.5-pro') {
+            // The response for Gemini might return an array of candidates
+            const candidate = data.candidates && data.candidates[0];
+            if (candidate && candidate.content && candidate.content.parts) {
+              reply = candidate.content.parts.map(p => p.text).join('');
+            } else {
+              reply = JSON.stringify(data);
+            }
+          } else {
+            reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+          }
+          if (!reply) reply = '[No response]';
+          messages.push({ role: 'assistant', content: reply });
+          addMessage('assistant', reply);
+        } catch (err) {
+          if (err.name === 'AbortError') {
+            addMessage('error', 'Request aborted.');
+          } else {
+            addMessage('error', err.message);
+          }
+        }
+      }
+
+      // Send message on click or pressing Enter while focusing the textarea
+      function handleSend() {
+        const text = userInput.value.trim();
+        if (!text) return;
+        if (!apiKey) {
+          alert('Please connect with an API key first.');
+          return;
+        }
+        // Record user message
+        messages.push({ role: 'user', content: text });
+        addMessage('user', text);
+        userInput.value = '';
+        // Call the model
+        callLLM().catch(err => {
+          addMessage('error', err.message);
+        });
+      }
+
+      sendBtn.addEventListener('click', handleSend);
+      // Pressing Enter sends the message (Shift+Enter inserts newline)
+      userInput.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' && !ev.shiftKey) {
+          ev.preventDefault();
+          handleSend();
+        }
+      });
+
+      // Stop current API call
+      stopBtn.addEventListener('click', () => {
+        if (controller) {
+          controller.abort();
+          controller = null;
+        }
+      });
+
+      // Clear chat history
+      clearBtn.addEventListener('click', () => {
+        clearChat();
+      });
+
+      // Save transcript
+      saveBtn.addEventListener('click', saveTranscript);
+    })();
+  </script>
+</body>
+</html>
