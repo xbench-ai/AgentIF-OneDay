@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7C3AED', // 主色调：深紫色
+                        secondary: '#22D3EE', // 辅助色：亮青色
+                        dark: '#121212',
+                        'dark-light': '#1E1E1E',
+                        'gray-custom': '#888888'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .album-rotate {
+                animation: rotate 20s linear infinite;
+            }
+            .progress-bar {
+                height: 4px;
+                @apply bg-gray-700 rounded-full overflow-hidden;
+            }
+            .progress-fill {
+                height: 100%;
+                @apply bg-secondary rounded-full transition-all duration-300 ease-out;
+            }
+            .lyrics-container {
+                height: 200px;
+                @apply overflow-hidden relative;
+            }
+            .lyrics-scroll {
+                @apply absolute w-full transition-transform duration-300 ease-out;
+            }
+            .btn-hover {
+                @apply transition-all duration-300 hover:scale-110 hover:shadow-lg;
+            }
+            .btn-primary {
+                @apply bg-primary text-white rounded-full flex items-center justify-center btn-hover;
+            }
+            .btn-secondary {
+                @apply bg-transparent text-white border border-white/30 rounded-full flex items-center justify-center btn-hover;
+            }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-dark to-dark-light text-white font-inter min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="music-player max-w-md w-full bg-dark-light/80 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/10">
+        <!-- 播放器头部 -->
+        <div class="p-6 pb-0 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wide">音乐播放器</h1>
+            <div class="flex gap-3">
+                <button class="text-gray-custom hover:text-white transition-colors">
+                    <i class="fa fa-list"></i>
+                </button>
+                <button class="text-gray-custom hover:text-white transition-colors">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 专辑封面 -->
+        <div class="mt-6 flex justify-center">
+            <div class="relative w-56 h-56 md:w-64 md:h-64">
+                <!-- 旋转的专辑封面 -->
+                <div class="absolute inset-0 rounded-full overflow-hidden album-rotate">
+                    <img src="https://picsum.photos/300/300?random=1" alt="专辑封面" class="w-full h-full object-cover">
+                </div>
+                <!-- 中心装饰 -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30"></div>
+                </div>
+                <!-- 外圈装饰 -->
+                <div class="absolute inset-0 rounded-full border-2 border-dashed border-white/10 -m-2"></div>
+                <div class="absolute inset-0 rounded-full border border-white/5 -m-4"></div>
+            </div>
+        </div>
+        
+        <!-- 音乐信息 -->
+        <div class="mt-8 text-center px-4">
+            <h2 class="text-xl font-bold truncate">星空下的约定</h2>
+            <p class="text-gray-custom mt-1">音乐艺术家</p>
+        </div>
+        
+        <!-- 进度条 -->
+        <div class="px-6 mt-6">
+            <div class="flex justify-between text-xs text-gray-custom mb-2">
+                <span>2:15</span>
+                <span>3:45</span>
+            </div>
+            <div class="progress-bar cursor-pointer group">
+                <div class="progress-fill w-[58%] group-hover:h-[6px] transition-all"></div>
+            </div>
+        </div>
+        
+        <!-- 歌词区域 -->
+        <div class="mt-6 px-6">
+            <div class="lyrics-container">
+                <div class="lyrics-scroll text-center" style="transform: translateY(-60px);">
+                    <p class="text-gray-custom mb-4">寂静的夜晚</p>
+                    <p class="text-gray-custom mb-4">星光闪烁</p>
+                    <p class="text-gray-custom mb-4">我们曾许下的诺言</p>
+                    <p class="text-white text-lg font-medium mb-4">在星空下轻轻回响</p>
+                    <p class="text-gray-custom mb-4">时光流逝</p>
+                    <p class="text-gray-custom mb-4">记忆依旧</p>
+                    <p class="text-gray-custom mb-4">那些美好的瞬间</p>
+                    <p class="text-gray-custom mb-4">永远不会褪色</p>
+                    <p class="text-gray-custom mb-4">每当我仰望星空</p>
+                    <p class="text-gray-custom mb-4">总会想起你的笑容</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 控制按钮 -->
+        <div class="mt-8 px-6 pb-10">
+            <div class="flex items-center justify-between">
+                <!-- 音量控制 -->
+                <div class="flex items-center gap-2">
+                    <button class="text-gray-custom hover:text-white transition-colors">
+                        <i class="fa fa-volume-up"></i>
+                    </button>
+                    <div class="progress-bar w-20">
+                        <div class="progress-fill w-[70%]"></div>
+                    </div>
+                </div>
+                
+                <!-- 播放模式 -->
+                <button class="text-gray-custom hover:text-white transition-colors">
+                    <i class="fa fa-random"></i>
+                </button>
+            </div>
+            
+            <!-- 主要控制按钮 -->
+            <div class="flex items-center justify-center gap-6 mt-6">
+                <button class="btn-secondary w-10 h-10">
+                    <i class="fa fa-step-backward"></i>
+                </button>
+                <button class="btn-secondary w-12 h-12">
+                    <i class="fa fa-backward"></i>
+                </button>
+                <button class="btn-primary w-16 h-16 shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+                    <i class="fa fa-pause text-lg"></i>
+                </button>
+                <button class="btn-secondary w-12 h-12">
+                    <i class="fa fa-forward"></i>
+                </button>
+                <button class="btn-secondary w-10 h-10">
+                    <i class="fa fa-step-forward"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 简单的交互功能
+        document.addEventListener('DOMContentLoaded', () => {
+            // 播放/暂停按钮切换
+            const playPauseBtn = document.querySelector('.btn-primary');
+            const playIcon = playPauseBtn.querySelector('i');
+            const albumCover = document.querySelector('.album-rotate');
+            
+            playPauseBtn.addEventListener('click', () => {
+                if (playIcon.classList.contains('fa-pause')) {
+                    playIcon.classList.remove('fa-pause');
+                    playIcon.classList.add('fa-play');
+                    albumCover.style.animationPlayState = 'paused';
+                } else {
+                    playIcon.classList.remove('fa-play');
+                    playIcon.classList.add('fa-pause');
+                    albumCover.style.animationPlayState = 'running';
+                }
+            });
+            
+            // 进度条交互
+            const progressBar = document.querySelector('.progress-bar');
+            const progressFill = progressBar.querySelector('.progress-fill');
+            
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const position = (e.clientX - rect.left) / rect.width;
+                const percentage = Math.max(0, Math.min(100, position * 100));
+                progressFill.style.width = `${percentage}%`;
+            });
+            
+            // 模拟歌词滚动
+            let lyricsPosition = -60;
+            const lyricsScroll = document.querySelector('.lyrics-scroll');
+            
+            setInterval(() => {
+                // 只有在播放状态才滚动歌词
+                if (playIcon.classList.contains('fa-pause')) {
+                    lyricsPosition -= 20;
+                    if (lyricsPosition < -200) {
+                        lyricsPosition = -60; // 重置歌词位置
+                    }
+                    lyricsScroll.style.transform = `translateY(${lyricsPosition}px)`;
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

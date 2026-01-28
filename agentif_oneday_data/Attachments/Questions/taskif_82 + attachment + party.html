@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>班级团建活动问卷</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .checkbox-group, .radio-group {
+      margin: 0.5rem 0;
+    }
+    .checkbox-group label, .radio-group label {
+      font-weight: normal;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>班级团建活动意愿调查</h1>
+  <p>Hi！我们准备组织一次班级聚餐 + 桌游的团建活动，请大家填写以下问卷，以便我们合理安排，谢谢配合！</p>
+
+  <form method="POST" action="https://formspree.io/f/your-form-id">
+    <!-- 替换上方 action 中的 your-form-id 为真实表单 ID -->
+
+    <label for="name">你的姓名</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="contact">联系方式（手机号/微信）</label>
+    <input type="text" id="contact" name="contact" required />
+
+    <label>你有兴趣参加活动吗？</label>
+    <div class="radio-group">
+      <label><input type="radio" name="participation" value="肯定参加" required> 肯定参加</label><br/>
+      <label><input type="radio" name="participation" value="可能参加"> 可能参加</label><br/>
+      <label><input type="radio" name="participation" value="暂不参加"> 暂不参加</label>
+    </div>
+
+    <label>你感兴趣的活动（可多选）</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="activity[]" value="聚餐"> 聚餐</label><br/>
+      <label><input type="checkbox" name="activity[]" value="桌游"> 桌游</label>
+    </div>
+
+    <label>你更倾向的时间</label>
+    <select name="preferred_time" required>
+      <option value="">-- 请选择 --</option>
+      <option value="周五晚上">周五晚上</option>
+      <option value="周六白天">周六白天</option>
+      <option value="周六晚上">周六晚上</option>
+      <option value="周日">周日</option>
+    </select>
+
+    <label>你对聚餐类型的偏好（可多选）</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="food[]" value="火锅"> 火锅</label><br/>
+      <label><input type="checkbox" name="food[]" value="烧烤"> 烧烤</label><br/>
+      <label><input type="checkbox" name="food[]" value="自助餐"> 自助餐</label><br/>
+      <label><input type="checkbox" name="food[]" value="中餐"> 中餐</label>
+    </div>
+
+    <label for="diet">是否有饮食忌口或特殊需求？</label>
+    <textarea id="diet" name="diet" rows="2"></textarea>
+
+    <label>你喜欢的桌游类型（可多选）</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="games[]" value="狼人杀"> 狼人杀</label><br/>
+      <label><input type="checkbox" name="games[]" value="UNO"> UNO</label><br/>
+      <label><input type="checkbox" name="games[]" value="谁是卧底"> 谁是卧底</label><br/>
+      <label><input type="checkbox" name="games[]" value="剧本杀"> 剧本杀</label><br/>
+      <label><input type="checkbox" name="games[]" value="其他"> 其他（请在下方填写）</label>
+    </div>
+
+    <label for="comments">其他建议或备注</label>
+    <textarea id="comments" name="comments" rows="3"></textarea>
+
+    <button type="submit">提交问卷</button>
+  </form>
+</body>
+</html>

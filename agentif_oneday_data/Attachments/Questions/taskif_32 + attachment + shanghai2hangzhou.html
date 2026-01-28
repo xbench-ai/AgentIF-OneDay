@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州5日慢行漫游计划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8f7f4; 
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 1.125rem;
+            top: 1.125rem;
+            bottom: -1.125rem;
+            width: 2px;
+            background-color: #d1d5db; 
+            transform: translateX(-50%);
+        }
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        .timeline-icon {
+            position: absolute;
+            left: 1.125rem;
+            top: 0.5rem;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 384px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-stone-700">
+
+    <div class="container mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">杭州5日慢行漫游</h1>
+            <p class="text-lg text-stone-600">一次关于自然、文化与美食的放松之旅</p>
+            <p class="text-md text-stone-500 mt-2">2024年7月1日 - 7月5日 | 上海出发</p>
+        </header>
+
+        <section id="overview" class="mb-12 p-6 bg-white rounded-2xl shadow-lg">
+            <h2 class="text-2xl font-semibold text-green-800 mb-4 text-center">行程概览</h2>
+            <p class="text-center text-stone-600 mb-6">本次旅程旨在平衡热门景点与深度体验，让您在五天内充分感受杭州的“人间天堂”魅力。我们为您规划了从西湖的经典风光到龙井的茶园闲情，再到运河的历史沉淀，步调从容，内容丰富。通过下方的快速导航，可以轻松跳转至您感兴趣的任何一天。</p>
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+                <button onclick="scrollToSection('day1')" class="nav-btn bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors duration-300">第一天</button>
+                <button onclick="scrollToSection('day2')" class="nav-btn bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors duration-300">第二天</button>
+                <button onclick="scrollToSection('day3')" class="nav-btn bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors duration-300">第三天</button>
+                <button onclick="scrollToSection('day4')" class="nav-btn bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors duration-300">第四天</button>
+                <button onclick="scrollToSection('day5')" class="nav-btn bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors duration-300">第五天</button>
+            </div>
+        </section>
+
+        <section id="transport" class="mb-12">
+             <div class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+                <div class="text-5xl">🚄</div>
+                <div class="flex-grow">
+                    <h3 class="text-xl font-semibold text-green-800">交通建议：上海 → 杭州</h3>
+                    <p class="text-stone-600 mt-2">从上海前往杭州，最便捷的方式是乘坐<span class="font-bold text-green-700">高铁</span>。车程约45分钟至1小时。建议从上海虹桥站出发，抵达杭州东站。票价根据座位等级约为70-120元人民币。请务必提前通过铁路官方App（12306）或授权平台预订车票，尤其是在旅游旺季。</p>
+                </div>
+            </div>
+        </section>
+
+        <main class="space-y-12">
+            <div id="day1" class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-green-800 mb-1">第一天: 抵达与西湖初探</h3>
+                <p class="text-stone-500 mb-6">主题：轻松抵达，初见西湖风韵</p>
+                
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">上午</div>
+                    <div class="ml-12"> 
+                        <h4 class="font-semibold text-lg mb-1">抵达杭州</h4>
+                        <p class="text-stone-600">乘坐高铁从上海抵达杭州东站，随后搭乘地铁前往西湖附近的酒店办理入住。安顿好后，可以先在酒店稍作休息。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">下午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">漫步北山街 & 断桥</h4>
+                        <p class="text-stone-600">从酒店出发，悠闲漫步至<span class="font-semibold">北山街</span>，感受民国风情建筑群。随后前往著名的<span class="font-semibold">断桥残雪</span>，这是欣赏西湖白堤风光的绝佳地点。</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                            <img src="https://live.staticflickr.com/6240/6246272097_e1a89f1224_b.jpg" alt="北山街" class="rounded-lg object-cover w-full h-48">
+                            <img src="https://5b0988e595225.cdn.sohucs.com/images/20200216/5479b5c6491a4ad99678e91f8a562bc2.jpeg" alt="断桥" class="rounded-lg object-cover w-full h-48">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">晚上</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">美食探索 & 湖滨夜色</h4>
+                        <p class="text-stone-600">🍜 <span class="font-bold">美食</span>: 在西湖附近的老字号餐厅“外婆家”或“绿茶”品尝地道的杭州菜，如东坡肉、龙井虾仁。<br>之后前往<span class="font-semibold">湖滨步行街</span>，欣赏西湖音乐喷泉，感受杭州的现代都市活力。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="day2" class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-green-800 mb-1">第二天: 禅意灵隐与茶园风光</h3>
+                <p class="text-stone-500 mb-6">主题：佛教文化与龙井茶香</p>
+                
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">上午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">灵隐寺 & 飞来峰</h4>
+                        <p class="text-stone-600">前往千年古刹<span class="font-semibold">灵隐寺</span>，感受浓厚的佛教文化氛围。寺外的<span class="font-semibold">飞来峰</span>石刻造像艺术精湛，值得细细品味。“曲径通幽处，禅房花木深”的意境在此体现得淋漓尽致。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">下午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">龙井问茶</h4>
+                        <p class="text-stone-600">探访<span class="font-semibold">龙井村</span>或<span class="font-semibold">梅家坞</span>茶文化村，漫步于一望无际的茶园之中，空气中弥漫着清新的茶香。找一家当地茶社，品一杯正宗的西湖龙井，享受悠闲的下午时光。</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                           <img src="https://resource.hzfjxh.com/attachment/upload/2024/01/01/346785_1000.jpg" alt="灵隐寺" class="rounded-lg object-cover w-full h-48">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS01D89N64DVnKs6IAbJHORcZMAhlfZodSg4A&s" alt="龙井茶园" class="rounded-lg object-cover w-full h-48">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">晚上</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">河坊街寻味</h4>
+                        <p class="text-stone-600">🍜 <span class="font-bold">美食</span>: 前往热闹的<span class="font-semibold">河坊街</span>，这里汇集了各种杭州特色小吃和手工艺品，是体验市井文化和寻觅美食的好去处。可以尝试定胜糕、葱包烩等。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="day3" class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-green-800 mb-1">第三天: 西湖深度与南宋古韵</h3>
+                <p class="text-stone-500 mb-6">主题：湖光山色与历史回响</p>
+                
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">上午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">船游西湖 & 漫步苏堤</h4>
+                        <p class="text-stone-600">乘坐游船，深入西湖，登临<span class="font-semibold">三潭印月</span>岛，近距离欣赏一元人民币背后的风景。下船后，漫步于<span class="font-semibold">苏堤春晓</span>，感受“六桥烟柳”的诗情画意。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">下午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">登雷峰塔</h4>
+                        <p class="text-stone-600">前往重建后的<span class="font-semibold">雷峰塔</span>，不仅可以了解白蛇传的传说，更重要的是可以登塔顶，360度俯瞰西湖全景与杭州城景，是摄影爱好者的必到之处。</p>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                            <img src="https://www.ourchinastory.com/images/content/snapshot/2021/12/%E7%95%B6%E4%BB%A3%E4%B8%AD%E5%9C%8B-%E4%B8%AD%E5%9C%8B%E6%97%85%E9%81%8A-%E4%B8%AD%E5%9C%8B%E6%96%87%E5%8C%96-%E6%9D%AD%E5%B7%9E-%E8%A5%BF%E6%B9%96%E4%B8%89%E7%B5%95-03_x1.jpg" alt="西湖游船" class="rounded-lg object-cover w-full h-48">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJEk2AqR7v_ABwlgOUmkmDj2FnFA2i2EYkAw&s" alt="雷峰塔" class="rounded-lg object-cover w-full h-48">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">晚上</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">《最忆是杭州》</h4>
+                        <p class="text-stone-600">🎭 <span class="font-bold">文化体验</span>: （可选）观看在西湖岳湖景区上演的大型水上实景演出<span class="font-semibold">《最忆是杭州》</span>，G20峰会文艺晚会的升级版，视听效果极为震撼。需提前购票。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="day4" class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-green-800 mb-1">第四天: 湿地静谧与文创艺术</h3>
+                <p class="text-stone-500 mb-6">主题：自然生态与现代设计</p>
+                
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">上午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">西溪国家湿地公园</h4>
+                        <p class="text-stone-600">探访电影《非诚勿扰》的取景地——<span class="font-semibold">西溪湿地</span>。乘摇橹船穿行于水道之间，远离城市喧嚣，享受一份宁静与野趣。这里是城市中的天然氧吧。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">下午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">艺术熏陶</h4>
+                        <p class="text-stone-600">前往由普利兹克奖得主王澍设计的<span class="font-semibold">中国美术学院（象山校区）</span>，欣赏其独特的建筑艺术。或者，可以回到市区，逛一逛充满历史感的<span class="font-semibold">南宋御街</span>，感受历史与现代的交融。</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKdtMygAMcSA3mE8CChR6fgIvKxWnZY7BmnQ&s" alt="西溪湿地" class="rounded-lg object-cover w-full h-48">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAgw5icm6GBB4Ej1woQOzrVoccybD5yVhaA&s" alt="中国美院象山校区" class="rounded-lg object-cover w-full h-48">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">晚上</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">现代杭城晚餐</h4>
+                        <p class="text-stone-600">🍜 <span class="font-bold">美食</span>: 在嘉里中心或万象城等现代商业区选择一家融合菜餐厅，体验杭州的现代美食文化。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="day5" class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-green-800 mb-1">第五天: 运河古迹与轻松返程</h3>
+                <p class="text-stone-500 mb-6">主题：运河文化，满载而归</p>
+                
+                <div class="timeline-item relative pb-8">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">上午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">京杭大运河</h4>
+                        <p class="text-stone-600">前往<span class="font-semibold">京杭大运河（杭州段）</span>，走一走历史悠久的<span class="font-semibold">拱宸桥</span>，参观桥边的中国京杭大运河博物馆、刀剪剑博物馆等，了解运河的千年历史与文化。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative">
+                    <div class="timeline-icon bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center font-bold">下午</div>
+                    <div class="ml-12">
+                        <h4 class="font-semibold text-lg mb-1">告别午餐 & 返程</h4>
+                        <p class="text-stone-600">🍜 <span class="font-bold">美食</span>: 在运河边或市区选择最后一家心仪的餐厅，享用告别午餐。<br>之后整理行装，前往杭州东站，乘坐高铁返回上海，结束愉快的杭州之旅。</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <section id="budget" class="mt-12 p-6 bg-white rounded-2xl shadow-lg">
+             <h2 class="text-2xl font-semibold text-green-800 mb-4 text-center">旅行预算概览</h2>
+             <p class="text-center text-stone-600 mb-6">以下是一个预估的单人5日游预算（不含购物），可作为您的参考。实际花费会因个人消费习惯、住宿标准和餐饮选择而异。通过图表可以直观地看到各项开销的占比。</p>
+             <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
+            </div>
+        </section>
+
+        <footer class="text-center py-10 mt-8 text-stone-500">
+            <p>祝您在杭州有一段美好的旅程！</p>
+            <p class="text-sm mt-2">本计划由AI生成，请根据实际情况灵活调整。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        const ctx = document.getElementById('budgetChart').getContext('2d');
+        const budgetChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['交通 (往返高铁+市内)', '住宿 (4晚)', '餐饮', '景点门票', '其他'],
+                datasets: [{
+                    label: '预算占比',
+                    data: [400, 1200, 1000, 500, 200],
+                    backgroundColor: [
+                        '#52796f',
+                        '#84a98c',
+                        '#a7c957',
+                        '#cad2c5',
+                        '#354f52'
+                    ],
+                    borderColor: '#f8f7f4',
+                    borderWidth: 4,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#374151',
+                            font: {
+                                size: 14,
+                                family: "'Noto Sans SC', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY' }).format(context.parsed);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-08-24T12:53:39.191610",
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful, concise assistant."
+    },
+    {
+      "role": "user",
+      "content": "This is a test"
+    },
+    {
+      "role": "assistant",
+      "content": "This is a response. How can I assist you today?"
+    }
+  ]
+}

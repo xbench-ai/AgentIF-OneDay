@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern LLM Chat</title>
+  <style>
+    /*
+      Basic reset and typography. Use a system font stack for a clean,
+      native look across platforms. The layout is split into a narrow
+      configuration pane on the left and a chat area on the right.
+    */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+      background: #f5f6f7;
+      color: #333;
+      height: 100vh;
+      display: flex;
+    }
+    /* Container holds the sidebar and the chat panel */
+    #container {
+      display: flex;
+      flex: 1;
+      width: 100%;
+    }
+    /* Sidebar styling */
+    aside {
+      width: 320px;
+      background: #fafafa;
+      border-right: 1px solid #e0e0e0;
+      padding: 16px 20px;
+      overflow-y: auto;
+    }
+    /* Each card is separated with a subtle border, padding and rounded corners */
+    .card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #555;
+    }
+    .card label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: #555;
+    }
+    .card input[type="password"],
+    .card input[type="text"],
+    .card input[type="number"],
+    .card select,
+    .card textarea {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 6px 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .card textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #f44336;
+    }
+    .btn-block {
+      width: 100%;
+      margin-top: 8px;
+    }
+    /* Toggle group styling */
+    .toggle-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-header input[type="checkbox"] {
+      margin-right: 6px;
+    }
+    /* Range controls */
+    .range-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .range-row span {
+      flex: 0 0 110px;
+      color: #555;
+    }
+    .range-row input[type="range"] {
+      flex: 1;
+      margin-right: 8px;
+    }
+    .range-row input[type="number"] {
+      width: 60px;
+      text-align: right;
+    }
+    /* Chat area */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+    }
+    .chat-log {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .message {
+      margin-bottom: 12px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    .message.user {
+      color: #1976d2;
+      font-weight: 600;
+    }
+    .message.assistant {
+      color: #2e7d32;
+      font-weight: 600;
+    }
+    .message .content {
+      font-weight: normal;
+      color: #333;
+    }
+    /* Input area at bottom of chat */
+    .input-area {
+      display: flex;
+      padding: 8px 16px;
+      gap: 8px;
+    }
+    #userInput {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    #sendBtn, #stopBtn {
+      min-width: 64px;
+    }
+    /* Reduce top margin of first card for better alignment */
+    aside .card:first-child {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <aside>
+      <div class="card">
+        <h3>API Configuration</h3>
+        <label for="apiKey">API Key:</label>
+        <input type="password" id="apiKey" placeholder="Enter your API key" />
+        <button id="connectBtn" class="btn btn-block">Connect</button>
+      </div>
+      <div class="card">
+        <h3>Model Selection</h3>
+        <label for="modelSelect">Model:</label>
+        <select id="modelSelect">
+          <option value="o1">o1</option>
+          <option value="o1-pro">o1-pro</option>
+          <option value="o3">o3</option>
+          <option value="gpt-4o">GPT-4o</option>
+          <option value="gemini-2.5-pro">Gemini-2.5-pro</option>
+        </select>
+      </div>
+      <div class="card" id="standardParams">
+        <div class="toggle-header">
+          <input type="checkbox" id="stdParamsToggle" checked />
+          <h3 style="margin:0;">Standard Parameters</h3>
+        </div>
+        <div class="std-body">
+          <div class="range-row">
+            <span>Temperature:</span>
+            <input type="range" id="temperatureRange" min="0" max="2" step="0.1" value="0.7" />
+            <input type="number" id="temperatureNumber" min="0" max="2" step="0.1" value="0.7" />
+          </div>
+          <div class="range-row">
+            <span>Max Tokens:</span>
+            <input type="range" id="maxTokensRange" min="1" max="4000" step="1" value="996" />
+            <input type="number" id="maxTokensNumber" min="1" max="4000" step="1" value="996" />
+          </div>
+          <div class="range-row">
+            <span>Top P:</span>
+            <input type="range" id="topPRange" min="0" max="1" step="0.01" value="1" />
+            <input type="number" id="topPNumber" min="0" max="1" step="0.01" value="1" />
+          </div>
+          <div class="range-row">
+            <span>Frequency Penalty:</span>
+            <input type="range" id="frequencyRange" min="-2" max="2" step="0.1" value="0" />
+            <input type="number" id="frequencyNumber" min="-2" max="2" step="0.1" value="0" />
+          </div>
+          <div class="range-row">
+            <span>Presence Penalty:</span>
+            <input type="range" id="presenceRange" min="-2" max="2" step="0.1" value="0" />
+            <input type="number" id="presenceNumber" min="-2" max="2" step="0.1" value="0" />
+          </div>
+        </div>
+      </div>
+      <div class="card" id="thinkingParams">
+        <div class="toggle-header">
+          <input type="checkbox" id="thinkingToggle" />
+          <h3 style="margin:0;">Thinking Parameters</h3>
+        </div>
+        <div class="thinking-body" style="display:none;">
+          <label for="reasoningEffort">Reasoning Effort:</label>
+          <select id="reasoningEffort">
+            <option value="low">low</option>
+            <option value="medium" selected>medium</option>
+            <option value="high">high</option>
+          </select>
+          <label for="maxCompletionTokens" style="margin-top:8px;">Max Completion Tokens:</label>
+          <input type="number" id="maxCompletionTokens" min="1" max="8192" value="2000" />
+        </div>
+      </div>
+      <div class="card">
+        <h3>System Prompt</h3>
+        <textarea id="systemPrompt" rows="4">You are a helpful, concise assistant.</textarea>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <h3>Actions</h3>
+        <button id="saveBtn" class="btn btn-block">Save Transcript</button>
+        <button id="clearBtn" class="btn btn-block btn-secondary">Clear Chat</button>
+      </div>
+    </aside>
+    <div class="main">
+      <div id="chatLog" class="chat-log"></div>
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your message here..." />
+        <button id="sendBtn" class="btn">Send</button>
+        <button id="stopBtn" class="btn btn-secondary" disabled>Stop</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Store conversation history
+    const messages = [];
+    const chatLog = document.getElementById('chatLog');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const stdParamsToggle = document.getElementById('stdParamsToggle');
+    const stdBody = document.querySelector('#standardParams .std-body');
+    const thinkingToggle = document.getElementById('thinkingToggle');
+    const thinkingBody = document.querySelector('#thinkingParams .thinking-body');
+    const temperatureRange = document.getElementById('temperatureRange');
+    const temperatureNumber = document.getElementById('temperatureNumber');
+    const maxTokensRange = document.getElementById('maxTokensRange');
+    const maxTokensNumber = document.getElementById('maxTokensNumber');
+    const topPRange = document.getElementById('topPRange');
+    const topPNumber = document.getElementById('topPNumber');
+    const frequencyRange = document.getElementById('frequencyRange');
+    const frequencyNumber = document.getElementById('frequencyNumber');
+    const presenceRange = document.getElementById('presenceRange');
+    const presenceNumber = document.getElementById('presenceNumber');
+    let abortController = null;
+
+    // Synchronize range inputs with number inputs
+    function syncRangeAndNumber(range, number) {
+      range.addEventListener('input', () => {
+        number.value = range.value;
+      });
+      number.addEventListener('input', () => {
+        range.value = number.value;
+      });
+    }
+    syncRangeAndNumber(temperatureRange, temperatureNumber);
+    syncRangeAndNumber(maxTokensRange, maxTokensNumber);
+    syncRangeAndNumber(topPRange, topPNumber);
+    syncRangeAndNumber(frequencyRange, frequencyNumber);
+    syncRangeAndNumber(presenceRange, presenceNumber);
+
+    // Toggle visibility of parameter sections
+    stdParamsToggle.addEventListener('change', () => {
+      stdBody.style.display = stdParamsToggle.checked ? 'block' : 'none';
+    });
+    thinkingToggle.addEventListener('change', () => {
+      thinkingBody.style.display = thinkingToggle.checked ? 'block' : 'none';
+    });
+
+    // Render messages in chat log
+    function renderMessages() {
+      chatLog.innerHTML = '';
+      messages.forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message');
+        msgDiv.classList.add(msg.role);
+        const roleSpan = document.createElement('span');
+        roleSpan.textContent = msg.role.toUpperCase() + ' ';
+        msgDiv.appendChild(roleSpan);
+        const contentSpan = document.createElement('span');
+        contentSpan.classList.add('content');
+        contentSpan.textContent = msg.content;
+        msgDiv.appendChild(contentSpan);
+        chatLog.appendChild(msgDiv);
+      });
+      // Scroll to bottom
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    // Add a message and re-render
+    function addMessage(role, content) {
+      messages.push({ role, content });
+      renderMessages();
+    }
+
+    // The placeholder fetchLLMResponse() helper used in the prototype has
+    // been removed. All interactions now go through callChatAPI(), which
+    // communicates with the selected model's REST endpoint.
+
+    /*
+     * Perform a chat completion request to either OpenAI or Gemini.
+     *
+     * For OpenAI models (o1, o1-pro, o3, gpt-4o) the request is sent to
+     * https://api.openai.com/v1/chat/completions with the given API key
+     * in the Authorization header. For Gemini models the OpenAI‑compatible
+     * endpoint hosted by Google is used: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions【790519302250388†L337-L354】【819030392808973†L149-L176】.
+     * The API key is passed in the Authorization header with the Bearer
+     * scheme for both providers.
+     *
+     * @param {string} model The model name selected by the user.
+     * @param {string} apiKey The provided API key.
+     * @param {Array<Object>} messages The conversation history formatted for the API.
+     * @param {Object} params Optional generation parameters (temperature, top_p, etc.).
+     * @param {AbortSignal} signal Abort controller signal to cancel the request.
+     * @returns {Promise<string>} The assistant's reply content.
+     */
+    async function callChatAPI(model, apiKey, messages, params, signal) {
+      let url;
+      const headers = { 'Content-Type': 'application/json' };
+      if (model === 'gemini-2.5-pro') {
+        url = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
+        headers['Authorization'] = `Bearer ${apiKey}`;
+      } else {
+        url = 'https://api.openai.com/v1/chat/completions';
+        headers['Authorization'] = `Bearer ${apiKey}`;
+      }
+      const body = {
+        model,
+        messages,
+        ...params
+      };
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+        signal
+      });
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`API error ${response.status}: ${errText}`);
+      }
+      const data = await response.json();
+      const choice = data.choices && data.choices[0];
+      if (!choice || !choice.message) {
+        throw new Error('Unexpected API response');
+      }
+      return choice.message.content;
+    }
+
+    // Conversation state capturing each turn. This array stores system,
+    // user and assistant messages in the order they are sent. It is
+    // separate from the messages array used solely for rendering so that
+    // conversation state can include the system message only once.
+    let conversation = [];
+
+    // Send message handler
+    async function handleSend() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      // Add user message to UI and internal conversation
+      addMessage('user', text);
+      conversation.push({ role: 'user', content: text });
+      userInput.value = '';
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const model = document.getElementById('modelSelect').value;
+      // disable send and enable stop
+      sendBtn.disabled = true;
+      stopBtn.disabled = false;
+      abortController = new AbortController();
+      // Build payload including system prompt once
+      const systemPrompt = document.getElementById('systemPrompt').value;
+      const messagesPayload = [];
+      if (!conversation.some(m => m.role === 'system')) {
+        messagesPayload.push({ role: 'system', content: systemPrompt });
+      }
+      for (const m of conversation) {
+        messagesPayload.push({ role: m.role, content: m.content });
+      }
+      // Generation parameters
+      let params = {};
+      if (stdParamsToggle.checked) {
+        params.temperature = parseFloat(temperatureNumber.value);
+        params.top_p = parseFloat(topPNumber.value);
+        params.max_tokens = parseInt(maxTokensNumber.value, 10);
+        params.frequency_penalty = parseFloat(frequencyNumber.value);
+        params.presence_penalty = parseFloat(presenceNumber.value);
+      }
+      try {
+        const assistantReply = await callChatAPI(model, apiKey, messagesPayload, params, abortController.signal);
+        if (!abortController.signal.aborted) {
+          addMessage('assistant', assistantReply);
+          conversation.push({ role: 'assistant', content: assistantReply });
+        }
+      } catch (err) {
+        if (abortController.signal.aborted) {
+          addMessage('assistant', '[Generation aborted]');
+        } else {
+          console.error(err);
+          addMessage('assistant', `[Error: ${err.message}]`);
+        }
+      } finally {
+        sendBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
+    }
+
+    // Event listeners
+    sendBtn.addEventListener('click', handleSend);
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    stopBtn.addEventListener('click', () => {
+      if (abortController) {
+        abortController.abort();
+        stopBtn.disabled = true;
+        sendBtn.disabled = false;
+      }
+    });
+    clearBtn.addEventListener('click', () => {
+      messages.splice(0);
+      conversation = [];
+      renderMessages();
+    });
+    saveBtn.addEventListener('click', () => {
+      const lines = messages.map(m => `${m.role.toUpperCase()}: ${m.content}`);
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'chat-transcript.txt';
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+      }, 0);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dive Profile Assessment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      line-height: 1.6;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h2 {
+      margin-top: 40px;
+    }
+    .status-safe {
+      color: green;
+      font-weight: bold;
+    }
+    .status-unsafe {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+  
+<body>
+
+  <h1>Dive Profile Safety Assessment</h1>
+
+  <h2>ssessment of Proposed Dive</h2>
+  <p><strong>Status:</strong> <span class="status-unsafe">Unsafe</span></p>
+  <ul>
+    <li><strong>NDL Exceeded:</strong> At 30 meters, the no-decompression limit is <strong>20 minutes</strong>. The proposed dive of <strong>24 minutes</strong> exceeds this limit.</li>
+    <li><strong>Safety Stop Missing:</strong> Omitting a safety stop at this depth increases the risk of decompression sickness (DCS).</li>
+    <li><strong>Ascent Rate Not Specified:</strong> No ascent speed is provided. A fast ascent could lead to pulmonary barotrauma.</li>
+  </ul>
+
+  <hr />
+
+  <h2>Recommended Alternative Dive Plan</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Recommended Value</th>
+        <th>Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Maximum Depth</td>
+        <td>24 meters</td>
+        <td>Provides more bottom time within NDL (25 min at 24m)</td>
+      </tr>
+      <tr>
+        <td>Bottom Time</td>
+        <td>20 minutes</td>
+        <td>5 minutes below the NDL for a safety buffer</td>
+      </tr>
+      <tr>
+        <td>Safety Stop</td>
+        <td>5 meters for 3 minutes</td>
+        <td>Recommended for dives below 18m</td>
+      </tr>
+      <tr>
+        <td>Ascent Rate</td>
+        <td>Max 9 meters per minute</td>
+        <td>Reduces risk of barotrauma and DCS</td>
+      </tr>
+      <tr>
+        <td>Surface Interval</td>
+        <td>At least 1 hour</td>
+        <td>Allows safe off-gassing before a second dive</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Summary</h2>
+  <ul>
+    <li>This alternative dive plan stays <strong>within the no-decompression limits</strong>.</li>
+    <li>Includes a <strong>mandatory safety stop</strong> and safe ascent rate.</li>
+    <li>Supports <strong>multi-dive planning</strong> with a proper surface interval.</li>
+  </ul>
+
+  <p><em>All recommendations are based on the Open Water Diver Manual, Chapter 3: Dive Planning and Tables.</em></p>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米手机产品信息展示</title>
+    <script src="https://cdn.tailwindcss.com/3.3.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        
+        .info-card {
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+        
+        .info-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-card.active {
+            transform: scale(1.05);
+            background-color: #f0f9ff;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .image-container {
+            perspective: 1000px;
+        }
+        
+        .phone-image {
+            transition: transform 0.5s ease;
+            animation: rotatePhone 5s linear infinite;
+        }
+        
+        @keyframes rotatePhone {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .version-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-600">小米手机产品信息展示</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- 产品图片展示区 -->
+            <div class="image-container bg-white rounded-xl p-6 shadow-md flex flex-col items-center">
+                <div class="w-full h-64 md:h-80 relative mb-6 flex items-center justify-center">
+                    <img id="phoneImage" src="https://s.coze.cn/image/6adYunTb5Ig/" 
+                         alt="小米手机展示图" class="phone-image w-auto h-full object-contain">
+                </div>
+                <div class="text-sm text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i> 产品模型自动旋转展示中
+                </div>
+            </div>
+            
+            <!-- 外观尺寸信息 -->
+            <div class="info-card p-6" onclick="toggleActive(this)">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-ruler-combined text-blue-500 mr-2"></i>
+                    外观尺寸信息
+                </h2>
+                <ul class="space-y-2">
+                    <li><strong>长度：</strong>152.3mm</li>
+                    <li><strong>宽度：</strong>71.2mm</li>
+                    <li><strong>厚度：</strong>
+                        <ul class="ml-6 mt-1 space-y-1">
+                            <li>玻璃版：8.08mm</li>
+                            <li>亮银版：8.48mm</li>
+                            <li>钻石限定版：8.36mm</li>
+                        </ul>
+                    </li>
+                    <li><strong>重量：</strong>
+                        <ul class="ml-6 mt-1 space-y-1">
+                            <li>玻璃版：191g</li>
+                            <li>亮银版：192g</li>
+                            <li>钻石限定版：189g</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-4">
+                    <i class="fas fa-info-circle mr-1"></i> 以上数据为小米实验室测试数据，依据行业内测量方式不同，实际结果可能略有差异。
+                </p>
+            </div>
+        </div>
+        
+        <!-- 手机部件位置 -->
+        <div class="info-card p-6 mb-8" onclick="toggleActive(this)">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fas fa-mobile-alt text-blue-500 mr-2"></i>
+                手机部件位置
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-semibold mb-2">顶部</h3>
+                    <ul class="space-y-1 ml-4">
+                        <li>电源键</li>
+                        <li>音量增/减键</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2">左侧</h3>
+                    <ul class="space-y-1 ml-4">
+                        <li>扬声器&麦克风</li>
+                        <li>USB Type-C双面充电接口</li>
+                        <li>麦克风</li>
+                        <li>SIM卡槽</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2">右上角</h3>
+                    <ul class="space-y-1 ml-4">
+                        <li>摄像头模组（含多个圆形元件）</li>
+                        <li>闪光灯</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2">右侧</h3>
+                    <ul class="space-y-1 ml-4">
+                        <li>扬声器&麦克风</li>
+                        <li>麦克风</li>
+                        <li>红外</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-4">
+                <h3 class="font-semibold mb-2">背面中间靠上</h3>
+                <p class="ml-4">"Xiaomi"品牌标识</p>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">
+                <i class="fas fa-info-circle mr-1"></i> 小米15相机模组处麦克风采用正面开孔；小米15钻石限定版相机模组处麦克风采用侧面隐藏式开孔设计，详情以具体实物为准。
+            </p>
+        </div>
+        
+        <!-- 产品版本差异 -->
+        <div class="info-card p-6 mb-8" onclick="toggleActive(this)">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fas fa-list-ul text-blue-500 mr-2"></i>
+                产品版本差异
+            </h2>
+            <div class="overflow-x-auto version-table">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-blue-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">版本</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">厚度</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">重量</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">麦克风开孔位置</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">玻璃版</td>
+                            <td class="px-6 py-4 whitespace-nowrap">8.08mm</td>
+                            <td class="px-6 py-4 whitespace-nowrap">191g</td>
+                            <td class="px-6 py-4 whitespace-nowrap">相机模组正面开孔</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">亮银版</td>
+                            <td class="px-6 py-4 whitespace-nowrap">8.48mm</td>
+                            <td class="px-6 py-4 whitespace-nowrap">192g</td>
+                            <td class="px-6 py-4 whitespace-nowrap">相机模组正面开孔</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">钻石限定版</td>
+                            <td class="px-6 py-4 whitespace-nowrap">8.36mm</td>
+                            <td class="px-6 py-4 whitespace-nowrap">189g</td>
+                            <td class="px-6 py-4 whitespace-nowrap">相机模组侧面隐藏开孔</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-sm text-gray-500 mt-12 py-4">
+        <p>created by <a href="https://space.coze.cn" class="text-blue-500 hover:underline">coze space</a></p>
+        <p class="mt-1">页面内容均由 AI 生成，仅供参考</p>
+    </footer>
+
+    <script>
+        // 卡片点击高亮效果
+        function toggleActive(element) {
+            // 移除所有卡片的active类
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('h2').style.fontSize = '';
+            });
+            
+            // 为当前点击的卡片添加active类
+            element.classList.add('active');
+            const heading = element.querySelector('h2');
+            heading.style.fontSize = 'calc(1.25rem * 1.1)';
+        }
+    </script>
+</body>
+</html>

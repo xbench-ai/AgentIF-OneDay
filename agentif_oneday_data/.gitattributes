@@ -1,0 +1,101 @@
+*.7z filter=lfs diff=lfs merge=lfs -text
+*.arrow filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.bz2 filter=lfs diff=lfs merge=lfs -text
+*.ckpt filter=lfs diff=lfs merge=lfs -text
+*.ftz filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+*.joblib filter=lfs diff=lfs merge=lfs -text
+*.lfs.* filter=lfs diff=lfs merge=lfs -text
+*.lz4 filter=lfs diff=lfs merge=lfs -text
+*.mds filter=lfs diff=lfs merge=lfs -text
+*.mlmodel filter=lfs diff=lfs merge=lfs -text
+*.model filter=lfs diff=lfs merge=lfs -text
+*.msgpack filter=lfs diff=lfs merge=lfs -text
+*.npy filter=lfs diff=lfs merge=lfs -text
+*.npz filter=lfs diff=lfs merge=lfs -text
+*.onnx filter=lfs diff=lfs merge=lfs -text
+*.ot filter=lfs diff=lfs merge=lfs -text
+*.parquet filter=lfs diff=lfs merge=lfs -text
+*.pb filter=lfs diff=lfs merge=lfs -text
+*.pickle filter=lfs diff=lfs merge=lfs -text
+*.pkl filter=lfs diff=lfs merge=lfs -text
+*.pt filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.rar filter=lfs diff=lfs merge=lfs -text
+*.safetensors filter=lfs diff=lfs merge=lfs -text
+saved_model/**/* filter=lfs diff=lfs merge=lfs -text
+*.tar.* filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+*.tflite filter=lfs diff=lfs merge=lfs -text
+*.tgz filter=lfs diff=lfs merge=lfs -text
+*.wasm filter=lfs diff=lfs merge=lfs -text
+*.xz filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.zst filter=lfs diff=lfs merge=lfs -text
+*tfevents* filter=lfs diff=lfs merge=lfs -text
+# Audio files - uncompressed
+*.pcm filter=lfs diff=lfs merge=lfs -text
+*.sam filter=lfs diff=lfs merge=lfs -text
+*.raw filter=lfs diff=lfs merge=lfs -text
+# Audio files - compressed
+*.aac filter=lfs diff=lfs merge=lfs -text
+*.flac filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+# Image files - uncompressed
+*.bmp filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+# Image files - compressed
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+# Video files - compressed
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.webm filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_10[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]largest_companies_by_revenue.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_10[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]WEF_Future_of_Jobs_Report_2025.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_106[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]iPhone_Plan.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_107[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]CICC[[:space:]](China[[:space:]]International[[:space:]]Capital[[:space:]]Corporation[[:space:]]Limited)[[:space:]]2025[[:space:]]Research[[:space:]]Report(修改版3).pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_107[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Tencent[[:space:]]Holdings[[:space:]]Ltd_[[:space:]]Research[[:space:]]Report[[:space:]]2025(修改版1).pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_111[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]mergermarket-deals.xlsx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_113[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Al-Kindi[[:space:]]On[[:space:]]First[[:space:]]Philosophy.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_123[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]data.pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_129[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]computer_size_and_capability.xlsx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_135[[:space:]]+[[:space:]]attachment[[:space:]][[:space:]]+[[:space:]]radiohead-creep.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_154[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Cascade[[:space:]]Private[[:space:]]Capital[[:space:]]Fund[[:space:]](CPEFX)[[:space:]]–[[:space:]]Schedule[[:space:]]of[[:space:]]Investments[[:space:]](June 30 2025).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_154[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]CION[[:space:]]Grosvenor[[:space:]]Infrastructure[[:space:]]Master[[:space:]]Fund[[:space:]]–[[:space:]]Consolidated[[:space:]]Schedule[[:space:]]of[[:space:]]Investments[[:space:]](June 30 2025).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_155[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]6[[:space:]]Brilliant[[:space:]]Sales[[:space:]]Leader[[:space:]]Dashboards[[:space:]](Business[[:space:]]Analyze[[:space:]]eBook).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_155[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Enterprise[[:space:]]Dashboards[[:space:]]–[[:space:]]Design[[:space:]]and[[:space:]]Best[[:space:]]Practices[[:space:]]for[[:space:]]IT.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_155[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Top[[:space:]]9[[:space:]]Power BI[[:space:]]Dashboard[[:space:]]Examples[[:space:]](Zebra[[:space:]]BI).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Be a Food Hero Cookbook.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Cooking for One.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Meal‑in‑a‑Bag System with Seven Printable Recipes.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]RecipeBook Summer 2022 Digital Spreads.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]RecipeBook Winter Holiday 2020 Digital Spreads.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Sugar’s Top 10 Most Requested Recipes.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Super Natural Every Day_ Six Recipe Sampler.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_156[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Veggie Happy Recipe Book (Wrecking Routine).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_157[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]PGM-Email-Marketing-Best-Practices-Guide.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_158[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]CION[[:space:]]Grosvenor[[:space:]]Infrastructure[[:space:]]Master[[:space:]]Fund[[:space:]]–[[:space:]]Consolidated[[:space:]]Schedule[[:space:]]of[[:space:]]Investments[[:space:]](June 30 2025).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_159[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Cascade[[:space:]]Private[[:space:]]Capital[[:space:]]Fund[[:space:]](CPEFX)[[:space:]]–[[:space:]]Schedule[[:space:]]of[[:space:]]Investments[[:space:]](June 30 2025).pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_161[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]How-to-create-and-use-CTA-buttons.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_161[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]LT_eBook_CreateEffectiveCTAs_v2.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_20[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]OWD_English-Metric_Book.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_29[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]The-Chinese-Postman-Problem-and-TSP-Approximation.pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_38[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]language[[:space:]]_of_flowers.pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_39[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]the_hadal_zone.pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_45[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Smartphone[[:space:]]Market[[:space:]]Competitor[[:space:]]Analysis[[:space:]]Report[[:space:]]2025.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_45[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Streaming[[:space:]]Service[[:space:]]Market[[:space:]]Competitor[[:space:]]Analysis[[:space:]]Report[[:space:]]2025.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_46[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Electric[[:space:]]SUV[[:space:]]Competitor[[:space:]]Analysis[[:space:]]Report[[:space:]]2025_[[:space:]]Tesla[[:space:]]Model[[:space:]]Y[[:space:]]vs[[:space:]]BYD[[:space:]]Tang.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_67[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]2025考公科目备考计划.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_81[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]the_hadal_zone.pptx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_9[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Grading_Criteria_Sample.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_94[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Department+F2000+List_300+500.xlsx filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_95[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]Fianl[[:space:]]-[[:space:]]MKTG6015-Group[[:space:]]2[[:space:]]-[[:space:]]Assingment[[:space:]]Part[[:space:]]A.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_96[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]File[[:space:]]A.pdf filter=lfs diff=lfs merge=lfs -text
+attachments/taskif_96[[:space:]]+[[:space:]]attachment[[:space:]]+[[:space:]]File[[:space:]]B.pdf filter=lfs diff=lfs merge=lfs -text

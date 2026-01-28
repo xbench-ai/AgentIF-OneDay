@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张小明的博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+        }
+
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --hover-color: #f1f3f4;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --hover-color: #3a3a3a;
+            --secondary-color: #4a90e2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: white;
+            color: var(--secondary-color);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .content {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        /* Article Styles */
+        .article {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .article:last-child {
+            border-bottom: none;
+        }
+
+        .article-header {
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .article-meta {
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .article-content {
+            margin: 1rem 0;
+        }
+
+        .article-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .read-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar */
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .recent-posts {
+            list-style: none;
+        }
+
+        .recent-posts li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .recent-posts a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .recent-posts a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Search */
+        .search-box {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .search-results {
+            margin-top: 1rem;
+        }
+
+        .highlight {
+            background-color: yellow;
+            color: black;
+        }
+
+        /* Comments */
+        .comments-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .comment-form {
+            margin-bottom: 2rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .comment-form button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment {
+            background: var(--hover-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .comment-date {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Social Share */
+        .social-share {
+            margin: 1rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .share-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .share-wechat { background: #1aad19; }
+        .share-weibo { background: #e6162d; }
+        .share-qzone { background: #ffc500; color: black; }
+        .share-twitter { background: #1da1f2; }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .article-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .article-form input,
+        .article-form textarea,
+        .article-form select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .article-form button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">张小明的博客</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="nav-link active">首页</a></li>
+                <li><a href="#" onclick="showPage('about')" class="nav-link">关于</a></li>
+                <li><a href="#" onclick="showPage('contact')" class="nav-link">联系</a></li>
+                <li><a href="#" onclick="showPage('admin')" class="nav-link">管理</a></li>
+            </ul>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i> 深色模式
+            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="main-layout">
+            <main class="content">
+                <!-- 首页 -->
+                <div id="home" class="page active">
+                    <div class="search-section" style="margin-bottom: 2rem;">
+                        <input type="text" class="search-box" placeholder="搜索文章..." onkeyup="searchArticles(this.value)">
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                    
+                    <div id="articlesList">
+                        <!-- 文章列表将由JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 关于页面 -->
+                <div id="about" class="page">
+                    <h1>关于我</h1>
+                    <div style="line-height: 1.8;">
+                        <p style="margin-bottom: 1rem;">大家好，我是张小明，一名专注于AI Agent技术的专业人员。</p>
+                        
+                        <h3 style="color: var(--secondary-color); margin: 1.5rem 0 1rem 0;">技术背景</h3>
+                        <p style="margin-bottom: 1rem;">我是一名AI Agent Professional，专注于人工智能代理系统的研发与应用。在这个快速发展的领域中，我致力于探索AI Agent的各种可能性和应用场景。</p>
+                        
+                        <h3 style="color: var(--secondary-color); margin: 1.5rem 0 1rem 0;">专业领域</h3>
+                        <ul style="margin: 1rem 0; padding-left: 2rem;">
+                            <li>AI Agent系统设计与开发</li>
+                            <li>自然语言处理和理解</li>
+                            <li>机器学习算法优化</li>
+                            <li>智能任务执行系统</li>
+                        </ul>
+                        
+                        <h3 style="color: var(--secondary-color); margin: 1.5rem 0 1rem 0;">兴趣爱好</h3>
+                        <p style="margin-bottom: 1rem;">除了技术工作，我还喜欢阅读最新的AI研究论文，参与开源项目，以及与同行交流最新的技术趋势。我相信通过不断学习和实践，能够推动AI Agent技术的进步。</p>
+                    </div>
+                </div>
+
+                <!-- 联系页面 -->
+                <div id="contact" class="page">
+                    <h1>联系我</h1>
+                    <div style="line-height: 1.8;">
+                        <p style="margin-bottom: 2rem;">如果您对我的工作感兴趣，或者想要讨论AI Agent相关的技术问题，欢迎与我联系。</p>
+                        
+                        <div style="background: var(--card-bg); padding: 2rem; border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                            <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">
+                                <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
+                                邮箱联系
+                            </h3>
+                            <p style="font-size: 1.1rem;">
+                                <strong>taskifweb@nowhere.com</strong>
+                            </p>
+                            <p style="margin-top: 1rem; color: #666;">
+                                我会尽快回复您的邮件，期待与您的交流！
+                            </p>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; padding: 1.5rem; background: var(--hover-color); border-radius: 10px;">
+                            <h4 style="color: var(--secondary-color); margin-bottom: 1rem;">最佳联系时间</h4>
+                            <p>工作日 9:00 - 18:00 (GMT+8)</p>
+                            <p style="margin-top: 0.5rem;">我会在24小时内回复您的邮件</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 管理页面 -->
+                <div id="admin" class="page">
+                    <h1>管理后台</h1>
+                    
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <h3 id="totalArticles">0</h3>
+                            <p>总文章数</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalViews">0</h3>
+                            <p>总访问量</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalComments">0</h3>
+                            <p>总评论数</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-panel">
+                        <h2>发布新文章</h2>
+                        <form class="article-form" onsubmit="addArticle(event)">
+                            <input type="text" id="articleTitle" placeholder="文章标题" required>
+                            <input type="text" id="articleTags" placeholder="标签 (用逗号分隔)">
+                            <textarea id="articleContent" rows="10" placeholder="文章内容" required></textarea>
+                            <button type="submit">发布文章</button>
+                        </form>
+                    </div>
+
+                    <div class="admin-panel">
+                        <h2>文章管理</h2>
+                        <div id="adminArticlesList">
+                            <!-- 管理文章列表 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 单篇文章详情页面 -->
+                <div id="articleDetail" class="page">
+                    <div id="articleDetailContent">
+                        <!-- 文章详情内容 -->
+                    </div>
+                    
+                    <div class="social-share">
+                        <a href="#" class="share-btn share-wechat" onclick="shareToSocial('wechat')">
+                            <i class="fab fa-weixin"></i> 微信
+                        </a>
+                        <a href="#" class="share-btn share-weibo" onclick="shareToSocial('weibo')">
+                            <i class="fab fa-weibo"></i> 微博
+                        </a>
+                        <a href="#" class="share-btn share-qzone" onclick="shareToSocial('qzone')">
+                            <i class="fab fa-qq"></i> QQ空间
+                        </a>
+                        <a href="#" class="share-btn share-twitter" onclick="shareToSocial('twitter')">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                    </div>
+
+                    <div class="comments-section">
+                        <h3>评论</h3>
+                        <form class="comment-form" onsubmit="addComment(event)">
+                            <input type="text" id="commentAuthor" placeholder="您的姓名" required>
+                            <textarea id="commentContent" rows="4" placeholder="写下您的评论..." required></textarea>
+                            <button type="submit">发表评论</button>
+                        </form>
+                        <div id="commentsList">
+                            <!-- 评论列表 -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">个人简介</h3>
+                    <p>我是张小明，AI Agent Professional，专注于通过收集高难度、具备实用性且可验证的指令遵循题目，以端到端任务的方式评估模型和Agents的任务执行能力。</p>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">最新文章</h3>
+                    <ul class="recent-posts" id="recentPosts">
+                        <!-- 最新文章列表 -->
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">访问统计</h3>
+                    <div id="viewStats">
+                        <p>今日访问: <span id="todayViews">0</span></p>
+                        <p>总访问量: <span id="totalViewsDisplay">0</span></p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 张小明的博客. All rights reserved.</p>
+            <p>专注于AI Agent技术研究与应用</p>
+        </div>
+    </footer>
+
+    <script>
+        // 全局变量
+        let articles = [];
+        let comments = {};
+        let currentTheme = 'light';
+        let currentArticleId = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromStorage();
+            initializeFirstArticle();
+            updateDisplay();
+            loadTheme();
+        });
+
+        // 主题切换
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            
+            const themeBtn = document.querySelector('.theme-toggle');
+            if (currentTheme === 'dark') {
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i> 浅色模式';
+            } else {
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i> 深色模式';
+            }
+            
+            localStorage.setItem('theme', currentTheme);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            currentTheme = savedTheme;
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            
+            const themeBtn = document.querySelector('.theme-toggle');
+            if (currentTheme === 'dark') {
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i> 浅色模式';
+            }
+        }
+
+        // 页面导航
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 更新导航状态
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // 初始化第一篇文章
+        function initializeFirstArticle() {
+            if (articles.length === 0) {
+                const firstArticle = {
+                    id: Date.now(),
+                    title: "Hello World - 我的博客之旅开始了",
+                    content: `大家好，我是张小明，欢迎来到我的个人博客！
+
+## 关于我
+
+我是一名AI Agent Professional，专注于人工智能代理系统的研究与开发。在这个充满挑战和机遇的领域中，我始终保持着对技术的热情和对创新的追求。
+
+## 我的技术背景
+
+作为AI Agent Professional，我的工作涉及多个前沿技术领域：
+
+**核心技能领域：**
+- 自然语言处理和理解
+- 机器学习算法设计与优化  
+- 智能任务规划与执行
+- 多模态AI系统开发
+- 人机交互界面设计
+
+**项目经验：**
+我参与了多个大型AI项目的开发，从概念设计到系统实现，积累了丰富的实战经验。特别是在复杂任务分解、智能决策制定、以及系统性能优化方面有着深入的理解。
+
+## 博客目标
+
+创建这个博客的主要目标是：**通过收集高难度、具备实用性且可验证的指令遵循题目，以端到端任务的方式评估模型和Agents的任务执行能力。**
+
+### 具体来说，我希望：
+
+1. **建立评估标准体系**：开发一套完整的AI Agent能力评估框架，包括任务理解、执行精度、错误处理等多个维度。
+
+2. **收集真实应用场景**：从实际工作和生活中收集各种复杂任务，形成多样化的测试集，确保评估的全面性和实用性。
+
+3. **推动技术进步**：通过系统性的评估和分析，发现现有AI系统的不足，为改进方向提供数据支持。
+
+4. **促进知识分享**：将研究成果、技术见解和实践经验分享给更广泛的技术社区，推动整个领域的发展。
+
+## 我的研究重点
+
+### TaskIF项目
+我正在主导一个名为TaskIF的项目，专注于构建高质量的指令遵循评估集。这个项目的特色包括：
+
+- **稀缺性**：填补当前端到端Agent任务能力评估的空白
+- **训练价值**：为强化学习训练提供高质量标注数据
+- **真实场景模拟**：包含工作流跟随、隐式条件推断、迭代式编辑等实际应用模式
+
+### 技术创新方向
+在未来的研究中，我将重点关注：
+
+1. **多轮对话中的上下文理解**
+2. **复杂任务的自动分解与执行**
+3. **错误检测与自我修正机制**
+4. **跨模态信息的整合与处理**
+
+## 未来规划
+
+### 短期目标（6个月内）
+- 完成TaskIF评估集的第一个版本
+- 发布10篇技术深度分析文章
+- 建立开源社区，吸引更多研究者参与
+
+### 中期目标（1年内）
+- 与国际顶级研究机构建立合作关系
+- 在重要学术会议上发表研究成果
+- 开发可商用的AI Agent评估工具
+
+### 长期愿景（3年内）
+- 建立AI Agent能力评估的行业标准
+- 推动相关技术在更多领域的应用
+- 培养下一代AI研究人才
+
+## 为什么选择博客？
+
+在这个信息爆炸的时代，我选择通过博客的形式分享我的想法和研究成果，是因为：
+
+1. **深度交流**：博客能够承载更复杂、更深入的技术讨论
+2. **系统记录**：记录研究过程中的思考轨迹和技术演进
+3. **社区建设**：通过评论和互动，建立专业的技术社区
+4. **知识传承**：将个人经验系统化，为后来者提供参考
+
+## 期待与您的交流
+
+如果您也对AI Agent技术感兴趣，或者在相关领域有研究经验，我非常期待与您的交流。您可以通过评论区留言，或者发送邮件到 taskifweb@nowhere.com 与我联系。
+
+让我们一起推动AI Agent技术的发展，创造更智能、更有用的人工智能系统！
+
+---
+
+感谢您花时间阅读我的第一篇博客文章。这只是一个开始，未来我会持续分享更多有价值的内容。请记得关注我的博客更新，让我们在AI的世界里一起探索、一起成长！`,
+                    tags: ["AI Agent", "技术", "博客", "研究"],
+                    date: new Date().toLocaleDateString(),
+                    author: "张小明",
+                    views: 0
+                };
+                
+                articles.push(firstArticle);
+                comments[firstArticle.id] = [];
+                saveToStorage();
+            }
+        }
+
+        // 文章管理
+        function addArticle(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('articleTitle').value;
+            const content = document.getElementById('articleContent').value;
+            const tagsInput = document.getElementById('articleTags').value;
+            const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+            
+            const newArticle = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                tags: tags,
+                date: new Date().toLocaleDateString(),
+                author: "张小明",
+                views: 0
+            };
+            
+            articles.unshift(newArticle);
+            comments[newArticle.id] = [];
+            
+            // 清空表单
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleContent').value = '';
+            document.getElementById('articleTags').value = '';
+            
+            saveToStorage();
+            updateDisplay();
+            alert('文章发布成功！');
+        }
+
+        function deleteArticle(id) {
+            if (confirm('确定要删除这篇文章吗？')) {
+                articles = articles.filter(article => article.id !== id);
+                delete comments[id];
+                saveToStorage();
+                updateDisplay();
+            }
+        }
+
+        function editArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (article) {
+                document.getElementById('articleTitle').value = article.title;
+                document.getElementById('articleContent').value = article.content;
+                document.getElementById('articleTags').value = article.tags.join(', ');
+                
+                // 更新表单提交处理
+                const form = document.querySelector('.article-form');
+                form.onsubmit = function(event) {
+                    event.preventDefault();
+                    updateArticle(id);
+                };
+                
+                showPage('admin');
+            }
+        }
+
+        function updateArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (article) {
+                article.title = document.getElementById('articleTitle').value;
+                article.content = document.getElementById('articleContent').value;
+                const tagsInput = document.getElementById('articleTags').value;
+                article.tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+                
+                // 重置表单
+                document.getElementById('articleTitle').value = '';
+                document.getElementById('articleContent').value = '';
+                document.getElementById('articleTags').value = '';
+                
+                const form = document.querySelector('.article-form');
+                form.onsubmit = addArticle;
+                
+                saveToStorage();
+                updateDisplay();
+                alert('文章更新成功！');
+            }
+        }
+
+        // 显示文章详情
+        function showArticleDetail(id) {
+            const article = articles.find(a => a.id === id);
+            if (article) {
+                // 增加访问次数
+                article.views++;
+                saveToStorage();
+                
+                currentArticleId = id;
+                
+                const detailContent = document.getElementById('articleDetailContent');
+                detailContent.innerHTML = `
+                    <div class="article">
+                        <div class="article-header">
+                            <h1 class="article-title">${article.title}</h1>
+                            <div class="article-meta">
+                                <span><i class="fas fa-user"></i> ${article.author}</span>
+                                <span><i class="fas fa-calendar"></i> ${article.date}</span>
+                                <span><i class="fas fa-eye"></i> ${article.views}</span>
+                            </div>
+                        </div>
+                        <div class="article-content">${formatContent(article.content)}</div>
+                        <div class="article-tags">
+                            ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                loadComments(id);
+                showPage('articleDetail');
+                updateDisplay();
+            }
+        }
+
+        // 评论系统
+        function addComment(event) {
+            event.preventDefault();
+            
+            if (!currentArticleId) return;
+            
+            const author = document.getElementById('commentAuthor').value;
+            const content = document.getElementById('commentContent').value;
+            
+            const newComment = {
+                id: Date.now(),
+                author: author,
+                content: content,
+                date: new Date().toLocaleString()
+            };
+            
+            if (!comments[currentArticleId]) {
+                comments[currentArticleId] = [];
+            }
+            
+            comments[currentArticleId].push(newComment);
+            
+            // 清空表单
+            document.getElementById('commentAuthor').value = '';
+            document.getElementById('commentContent').value = '';
+            
+            saveToStorage();
+            loadComments(currentArticleId);
+        }
+
+        function loadComments(articleId) {
+            const commentsList = document.getElementById('commentsList');
+            const articleComments = comments[articleId] || [];
+            
+            commentsList.innerHTML = articleComments.map(comment => `
+                <div class="comment">
+                    <div class="comment-author">${comment.author}</div>
+                    <div class="comment-date">${comment.date}</div>
+                    <div class="comment-content">${comment.content}</div>
+                </div>
+            `).join('');
+        }
+
+        // 搜索功能
+        function searchArticles(query) {
+            const results = document.getElementById('searchResults');
+            
+            if (!query.trim()) {
+                results.innerHTML = '';
+                document.getElementById('articlesList').style.display = 'block';
+                return;
+            }
+            
+            const filteredArticles = articles.filter(article => 
+                article.title.toLowerCase().includes(query.toLowerCase()) ||
+                article.content.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filteredArticles.length === 0) {
+                results.innerHTML = '<p>没有找到相关文章</p>';
+                document.getElementById('articlesList').style.display = 'none';
+                return;
+            }
+            
+            results.innerHTML = `
+                <h3>搜索结果 (${filteredArticles.length})</h3>
+                ${filteredArticles.map(article => {
+                    const highlightedTitle = highlightText(article.title, query);
+                    const highlightedContent = highlightText(getArticlePreview(article), query);
+                    
+                    return `
+                        <div class="article">
+                            <div class="article-header">
+                                <h2 class="article-title" onclick="showArticleDetail(${article.id})">${highlightedTitle}</h2>
+                                <div class="article-meta">
+                                    <span><i class="fas fa-user"></i> ${article.author}</span>
+                                    <span><i class="fas fa-calendar"></i> ${article.date}</span>
+                                    <span><i class="fas fa-eye"></i> ${article.views}</span>
+                                </div>
+                            </div>
+                            <div class="article-content">${highlightedContent}</div>
+                            <div class="article-tags">
+                                ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+            
+            document.getElementById('articlesList').style.display = 'none';
+        }
+
+        function highlightText(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // 社交分享
+        function shareToSocial(platform) {
+            const article = articles.find(a => a.id === currentArticleId);
+            if (!article) return;
+            
+            const url = window.location.href;
+            const title = article.title;
+            const text = article.content.substring(0, 100) + '...';
+            
+            let shareUrl = '';
+            
+            switch(platform) {
+                case 'wechat':
+                    alert('请复制链接分享到微信：' + url);
+                    break;
+                case 'weibo':
+                    shareUrl = `https://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+                    break;
+                case 'qzone':
+                    shareUrl = `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+                    break;
+            }
+            
+            if (shareUrl) {
+                window.open(shareUrl, '_blank');
+            }
+        }
+
+        // 辅助函数
+        function formatContent(content) {
+            // 简单的markdown渲染
+            return content
+                .replace(/\n/g, '<br>')
+                .replace(/## (.*)/g, '<h2>$1</h2>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>');
+        }
+
+        function getArticlePreview(article) {
+            const wordCount = article.content.length;
+            if (wordCount > 1000) {
+                return article.content.substring(0, 200) + '...';
+            }
+            return article.content;
+        }
+
+        function shouldShowReadMore(article) {
+            return article.content.length > 1000;
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            updateArticlesList();
+            updateRecentPosts();
+            updateAdminStats();
+            updateAdminArticlesList();
+        }
+
+        function updateArticlesList() {
+            const articlesList = document.getElementById('articlesList');
+            
+            articlesList.innerHTML = articles.map(article => {
+                const preview = getArticlePreview(article);
+                const showReadMore = shouldShowReadMore(article);
+                
+                return `
+                    <div class="article">
+                        <div class="article-header">
+                            <h2 class="article-title" onclick="showArticleDetail(${article.id})">${article.title}</h2>
+                            <div class="article-meta">
+                                <span><i class="fas fa-user"></i> ${article.author}</span>
+                                <span><i class="fas fa-calendar"></i> ${article.date}</span>
+                                <span><i class="fas fa-eye"></i> ${article.views}</span>
+                            </div>
+                        </div>
+                        <div class="article-content">${formatContent(preview)}</div>
+                        ${showReadMore ? `<a href="#" class="read-more" onclick="showArticleDetail(${article.id})">阅读更多</a>` : ''}
+                        <div class="article-tags">
+                            ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateRecentPosts() {
+            const recentPosts = document.getElementById('recentPosts');
+            const recent = articles.slice(0, 5);
+            
+            recentPosts.innerHTML = recent.map(article => `
+                <li>
+                    <a href="#" onclick="showArticleDetail(${article.id})">${article.title}</a>
+                    <small style="display: block; color: #666;">${article.date}</small>
+                </li>
+            `).join('');
+        }
+
+        function updateAdminStats() {
+            const totalArticles = articles.length;
+            const totalViews = articles.reduce((sum, article) => sum + article.views, 0);
+            const totalComments = Object.values(comments).reduce((sum, commentList) => sum + commentList.length, 0);
+            
+            document.getElementById('totalArticles').textContent = totalArticles;
+            document.getElementById('totalViews').textContent = totalViews;
+            document.getElementById('totalViewsDisplay').textContent = totalViews;
+            document.getElementById('totalComments').textContent = totalComments;
+        }
+
+        function updateAdminArticlesList() {
+            const adminList = document.getElementById('adminArticlesList');
+            
+            adminList.innerHTML = articles.map(article => `
+                <div class="article" style="border: 1px solid var(--border-color); padding: 1rem; margin-bottom: 1rem; border-radius: 5px;">
+                    <h3>${article.title}</h3>
+                    <p style="color: #666; margin: 0.5rem 0;">
+                        ${article.date} | 访问量: ${article.views} | 评论: ${(comments[article.id] || []).length}
+                    </p>
+                    <div style="margin-top: 1rem;">
+                        <button onclick="editArticle(${article.id})" style="background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 3px; margin-right: 0.5rem; cursor: pointer;">编辑</button>
+                        <button onclick="deleteArticle(${article.id})" style="background: var(--accent-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 3px; cursor: pointer;">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 数据持久化
+        function saveToStorage() {
+            localStorage.setItem('blogArticles', JSON.stringify(articles));
+            localStorage.setItem('blogComments', JSON.stringify(comments));
+        }
+
+        function loadFromStorage() {
+            const savedArticles = localStorage.getItem('blogArticles');
+            const savedComments = localStorage.getItem('blogComments');
+            
+            if (savedArticles) {
+                articles = JSON.parse(savedArticles);
+            }
+            
+            if (savedComments) {
+                comments = JSON.parse(savedComments);
+            }
+        }
+    </script>
+</body>
+</html>

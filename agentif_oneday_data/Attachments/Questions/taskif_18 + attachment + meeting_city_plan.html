@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京与吉林出发会面城市推荐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        accent: '#FF7D00',
+                        neutral: '#6B7280',
+                        light: '#F3F4F6',
+                        dark: '#1F2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-dark">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md fixed w-full z-10 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-map-marker text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">旅途相聚</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="text-neutral hover:text-primary transition-custom">概览</a>
+                <a href="#comparison" class="text-neutral hover:text-primary transition-custom">行程对比</a>
+                <a href="#attractions" class="text-neutral hover:text-primary transition-custom">推荐景点</a>
+                <a href="#itinerary" class="text-neutral hover:text-primary transition-custom">行程规划</a>
+            </div>
+            <button class="md:hidden text-neutral text-xl" id="menu-toggle">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white w-full border-t" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#overview" class="text-neutral hover:text-primary py-2 transition-custom">概览</a>
+                <a href="#comparison" class="text-neutral hover:text-primary py-2 transition-custom">行程对比</a>
+                <a href="#attractions" class="text-neutral hover:text-primary py-2 transition-custom">推荐景点</a>
+                <a href="#itinerary" class="text-neutral hover:text-primary py-2 transition-custom">行程规划</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary to-primary/80 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 text-shadow">北京与吉林出发的最佳会面城市</h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8">为您推荐一个时间和花费都均衡的旅游目的地，让相聚更加轻松愉快</p>
+                <div class="inline-block bg-white text-primary font-semibold px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-custom">
+                    <i class="fa fa-map-marker mr-2"></i>推荐城市：沈阳
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 概览部分 -->
+    <section id="overview" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">为什么选择沈阳？</h2>
+                <p class="text-neutral">沈阳位于北京和吉林之间，是两地朋友会面的理想选择，交通便利且旅游资源丰富</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-light rounded-xl p-6 shadow-sm hover:shadow-md transition-custom">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-clock-o text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">时间均衡</h3>
+                    <p class="text-neutral">从北京到沈阳约4小时高铁，从吉林长春到沈阳约2小时高铁，整体时间差合理</p>
+                </div>
+
+                <div class="bg-light rounded-xl p-6 shadow-sm hover:shadow-md transition-custom">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-money text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">花费相近</h3>
+                    <p class="text-neutral">两地到沈阳的交通费用相对接近，不会造成一方花费过多的情况</p>
+                </div>
+
+                <div class="bg-light rounded-xl p-6 shadow-sm hover:shadow-md transition-custom">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-camera text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">旅游胜地</h3>
+                    <p class="text-neutral">沈阳拥有丰富的历史文化遗产和现代旅游设施，适合朋友相聚游玩</p>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-primary/5 rounded-xl p-6 md:p-8">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-6 md:mb-0">
+                        <img src="https://picsum.photos/id/1036/600/400" alt="沈阳城市风光" class="rounded-lg shadow-md w-full h-auto">
+                    </div>
+                    <div class="md:w-2/3 md:pl-8">
+                        <h3 class="text-xl font-semibold mb-3">沈阳城市简介</h3>
+                        <p class="text-neutral mb-4">沈阳是辽宁省省会，东北地区的经济、文化、交通和商贸中心，有着"一朝发祥地，两代帝王都"的美誉。这座城市既有深厚的历史底蕴，又有现代化的都市风貌，是体验东北风情的绝佳选择。</p>
+                        <p class="text-neutral">作为东北的重要交通枢纽，沈阳拥有完善的交通网络，无论从北京还是吉林出发，都能便捷到达。同时，沈阳的餐饮、住宿选择丰富，能满足不同预算的需求。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行程对比部分 -->
+    <section id="comparison" class="py-16 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">行程对比</h2>
+                <p class="text-neutral">北京和吉林到沈阳的交通方式、时间和费用对比</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- 北京出发 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-custom">
+                    <div class="bg-primary text-white p-4">
+                        <div class="flex items-center">
+                            <i class="fa fa-map-signs text-2xl mr-3"></i>
+                            <h3 class="text-xl font-semibold">从北京出发</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h4 class="font-semibold mb-2 flex items-center">
+                                <i class="fa fa-train text-primary mr-2"></i>推荐交通：高铁
+                            </h4>
+                            <ul class="space-y-2 text-neutral">
+                                <li class="flex items-center">
+                                    <i class="fa fa-clock-o w-5 text-primary"></i>
+                                    <span>行程时间：约4-4.5小时</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-ticket w-5 text-primary"></i>
+                                    <span>参考票价：约200-300元</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-calendar w-5 text-primary"></i>
+                                    <span>发车频率：每天30+班次</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-station w-5 text-primary"></i>
+                                    <span>出发站：北京南站/北京站</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-flag w-5 text-primary"></i>
+                                    <span>到达站：沈阳北站/沈阳站</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-2 flex items-center">
+                                <i class="fa fa-plane text-primary mr-2"></i>备选交通：飞机
+                            </h4>
+                            <ul class="space-y-2 text-neutral">
+                                <li class="flex items-center">
+                                    <i class="fa fa-clock-o w-5 text-primary"></i>
+                                    <span>飞行时间：约1.5小时</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-ticket w-5 text-primary"></i>
+                                    <span>参考票价：约300-800元（随季节波动）</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-calendar w-5 text-primary"></i>
+                                    <span>每日航班：10+班次</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 吉林出发 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-custom">
+                    <div class="bg-secondary text-white p-4">
+                        <div class="flex items-center">
+                            <i class="fa fa-map-signs text-2xl mr-3"></i>
+                            <h3 class="text-xl font-semibold">从吉林出发</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h4 class="font-semibold mb-2 flex items-center">
+                                <i class="fa fa-train text-secondary mr-2"></i>推荐交通：高铁
+                            </h4>
+                            <ul class="space-y-2 text-neutral">
+                                <li class="flex items-center">
+                                    <i class="fa fa-clock-o w-5 text-secondary"></i>
+                                    <span>行程时间：约2-2.5小时（从长春出发）</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-ticket w-5 text-secondary"></i>
+                                    <span>参考票价：约120-180元</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-calendar w-5 text-secondary"></i>
+                                    <span>发车频率：每天20+班次</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-station w-5 text-secondary"></i>
+                                    <span>出发站：长春站</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-flag w-5 text-secondary"></i>
+                                    <span>到达站：沈阳北站/沈阳站</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold mb-2 flex items-center">
+                                <i class="fa fa-plane text-secondary mr-2"></i>备选交通：飞机
+                            </h4>
+                            <ul class="space-y-2 text-neutral">
+                                <li class="flex items-center">
+                                    <i class="fa fa-clock-o w-5 text-secondary"></i>
+                                    <span>飞行时间：约1小时（从长春出发）</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-ticket w-5 text-secondary"></i>
+                                    <span>参考票价：约200-600元（随季节波动）</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa fa-calendar w-5 text-secondary"></i>
+                                    <span>每日航班：5+班次</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 费用对比图表 -->
+            <div class="mt-12 max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-xl font-semibold mb-6 text-center">交通费用对比（单程）</h3>
+                <div class="h-64">
+                    <canvas id="costChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 推荐景点 -->
+    <section id="attractions" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">沈阳推荐景点</h2>
+                <p class="text-neutral">适合朋友一起游览的热门景点，体验沈阳的历史与现代风情</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 景点1 -->
+                <div class="rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-custom">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1031/600/400" alt="沈阳故宫" class="w-full h-full object-cover group-hover:scale-105 transition-custom duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold mb-2">沈阳故宫</h3>
+                        <p class="text-neutral text-sm mb-3">中国现存仅次于北京故宫的最完整的皇宫建筑，具有浓郁的满族特色。</p>
+                        <div class="flex items-center text-sm text-neutral">
+                            <i class="fa fa-ticket mr-1"></i>
+                            <span>门票：约60元</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-clock-o mr-1"></i>
+                            <span>建议游览：3小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 景点2 -->
+                <div class="rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-custom">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1029/600/400" alt="张氏帅府" class="w-full h-full object-cover group-hover:scale-105 transition-custom duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold mb-2">张氏帅府</h3>
+                        <p class="text-neutral text-sm mb-3">张作霖和张学良父子的府邸，融合了中式和西式建筑风格，历史底蕴深厚。</p>
+                        <div class="flex items-center text-sm text-neutral">
+                            <i class="fa fa-ticket mr-1"></i>
+                            <span>门票：约60元</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-clock-o mr-1"></i>
+                            <span>建议游览：2小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 景点3 -->
+                <div class="rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-custom">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1039/600/400" alt="北陵公园" class="w-full h-full object-cover group-hover:scale-105 transition-custom duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold mb-2">北陵公园</h3>
+                        <p class="text-neutral text-sm mb-3">清昭陵，皇太极的陵墓，是中国现存最完整的古代帝王陵墓建筑之一。</p>
+                        <div class="flex items-center text-sm text-neutral">
+                            <i class="fa fa-ticket mr-1"></i>
+                            <span>门票：约50元</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-clock-o mr-1"></i>
+                            <span>建议游览：2.5小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 景点4 -->
+                <div class="rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-custom">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1067/600/400" alt="沈阳植物园" class="w-full h-full object-cover group-hover:scale-105 transition-custom duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold mb-2">沈阳植物园</h3>
+                        <p class="text-neutral text-sm mb-3">大型综合性植物园，花团锦簇，景色宜人，适合散步聊天。</p>
+                        <div class="flex items-center text-sm text-neutral">
+                            <i class="fa fa-ticket mr-1"></i>
+                            <span>门票：约50元</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-clock-o mr-1"></i>
+                            <span>建议游览：半天</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 景点5 -->
+                <div class="rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-custom">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1059/600/400" alt="刘老根大舞台" class="w-full h-full object-cover group-hover:scale-105 transition-custom duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold mb-2">刘老根大舞台</h3>
+                        <p class="text-neutral text-sm mb-3">赵本山旗下的二人转表演场所，体验地道的东北民间艺术。</p>
+                        <div class="flex items-center text-sm text-neutral">
+                            <i class="fa fa-ticket mr-1"></i>
+                            <span>门票：约180-580元</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-clock-o mr-1"></i>
+                            <span>演出时间：约2.5小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 景点6 -->
+                <div class="rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-custom">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1058/600/400" alt="中街步行街" class="w-full h-full object-cover group-hover:scale-105 transition-custom duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold mb-2">中街步行街</h3>
+                        <p class="text-neutral text-sm mb-3">沈阳最繁华的商业步行街，百年历史，购物、美食一应俱全。</p>
+                        <div class="flex items-center text-sm text-neutral">
+                            <i class="fa fa-ticket mr-1 text-transparent"></i>
+                            <span>免费</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-clock-o mr-1"></i>
+                            <span>建议游览：2-3小时</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行程规划 -->
+    <section id="itinerary" class="py-16 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">推荐行程规划</h2>
+                <p class="text-neutral">3天2晚的沈阳相聚之旅，合理安排时间，兼顾观光与休闲</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- 第一天 -->
+                <div class="bg-white rounded-xl shadow-sm mb-8 overflow-hidden">
+                    <div class="bg-primary text-white p-4">
+                        <h3 class="text-xl font-semibold">第一天：抵达与城市初探</h3>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-4">
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">上午</div>
+                                <div>
+                                    <p class="font-medium">各自从北京和吉林出发，前往沈阳</p>
+                                    <p class="text-neutral text-sm">建议预订中午前到达的高铁，方便下午开始行程</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">中午</div>
+                                <div>
+                                    <p class="font-medium">在沈阳火车站/高铁站汇合，前往酒店办理入住</p>
+                                    <p class="text-neutral text-sm">推荐住在中街或太原街附近，交通便利</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">下午</div>
+                                <div>
+                                    <p class="font-medium">游览沈阳故宫</p>
+                                    <p class="text-neutral text-sm">感受清朝早期皇宫的建筑特色和历史文化</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">晚上</div>
+                                <div>
+                                    <p class="font-medium">中街步行街晚餐+逛街</p>
+                                    <p class="text-neutral text-sm">品尝老边饺子、李连贵熏肉大饼等沈阳特色美食</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 第二天 -->
+                <div class="bg-white rounded-xl shadow-sm mb-8 overflow-hidden">
+                    <div class="bg-primary text-white p-4">
+                        <h3 class="text-xl font-semibold">第二天：历史文化之旅</h3>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-4">
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">上午</div>
+                                <div>
+                                    <p class="font-medium">游览张氏帅府和沈阳金融博物馆</p>
+                                    <p class="text-neutral text-sm">了解张作霖、张学良父子的历史事迹，参观民国时期的金融机构</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">中午</div>
+                                <div>
+                                    <p class="font-medium">西塔街午餐</p>
+                                    <p class="text-neutral text-sm">品尝正宗的韩式料理，体验朝鲜族风情</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">下午</div>
+                                <div>
+                                    <p class="font-medium">游览北陵公园（清昭陵）</p>
+                                    <p class="text-neutral text-sm">漫步皇家陵园，欣赏古建筑和园林景观</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">晚上</div>
+                                <div>
+                                    <p class="font-medium">刘老根大舞台观看二人转表演（可选）</p>
+                                    <p class="text-neutral text-sm">体验东北特色的民间艺术表演</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 第三天 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-primary text-white p-4">
+                        <h3 class="text-xl font-semibold">第三天：休闲与返程</h3>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-4">
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">上午</div>
+                                <div>
+                                    <p class="font-medium">沈阳植物园或辽宁省博物馆</p>
+                                    <p class="text-neutral text-sm">根据兴趣选择：喜欢自然景观可去植物园，喜欢文化艺术可去博物馆</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">中午</div>
+                                <div>
+                                    <p class="font-medium">太原街午餐+购买特产</p>
+                                    <p class="text-neutral text-sm">购买不老林糖、李连贵熏肉等沈阳特产</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="min-w-[80px] text-primary font-semibold">下午</div>
+                                <div>
+                                    <p class="font-medium">根据返程时间前往车站，结束愉快的相聚之旅</p>
+                                    <p class="text-neutral text-sm">建议预留足够时间前往车站，避免误车</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 预算参考 -->
+                <div class="mt-12 bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-xl font-semibold mb-6">预算参考（每人）</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium mb-3 text-primary">交通费用</h4>
+                            <ul class="space-y-2 text-neutral">
+                                <li class="flex justify-between">
+                                    <span>北京往返沈阳高铁</span>
+                                    <span>约400-600元</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>吉林（长春）往返沈阳高铁</span>
+                                    <span>约240-360元</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>沈阳市内交通</span>
+                                    <span>约100-200元</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-3 text-primary">其他费用</h4>
+                            <ul class="space-y-2 text-neutral">
+                                <li class="flex justify-between">
+                                    <span>住宿（2晚）</span>
+                                    <span>约400-800元</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>餐饮</span>
+                                    <span>约300-500元</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>景点门票</span>
+                                    <span>约200-300元</span>
+                                </li>
+                                <li class="flex justify-between font-medium pt-2 border-t border-gray-100">
+                                    <span>总计（约）</span>
+                                    <span>北京出发：1400-2400元</span>
+                                </li>
+                                <li class="flex justify-between font-medium">
+                                    <span></span>
+                                    <span>吉林出发：1240-2160元</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                        <i class="fa fa-map-marker text-primary text-2xl"></i>
+                        <h2 class="text-xl font-bold">旅途相聚</h2>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                            <i class="fa fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                            <i class="fa fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+                    <p>© 2023 旅途相聚 - 为您的会面提供最佳地点推荐</p>
+                    <p class="mt-2">本规划仅供参考，实际行程可根据个人喜好调整</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary/90">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('back-to-top');
+            
+            if (window.scrollY > 100) {
+                navbar.classList.add('py-2', 'shadow-lg');
+                navbar.classList.remove('py-3', 'shadow-md');
+                
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                navbar.classList.add('py-3', 'shadow-md');
+                navbar.classList.remove('py-2', 'shadow-lg');
+                
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        // 返回顶部功能
+        document.getElementById('back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // 关闭移动端菜单（如果打开）
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 费用对比图表
+        const ctx = document.getElementById('costChart').getContext('2d');
+        const costChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['高铁（单程）', '飞机（单程，经济舱）', '市内交通（3天）'],
+                datasets: [
+                    {
+                        label: '北京出发',
+                        data: [250, 550, 150],
+                        backgroundColor: 'rgba(22, 93, 255, 0.7)',
+                        borderColor: 'rgba(22, 93, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '吉林（长春）出发',
+                        data: [150, 400, 150],
+                        backgroundColor: 'rgba(54, 207, 201, 0.7)',
+                        borderColor: 'rgba(54, 207, 201, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '费用（元）'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '元';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 图片加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                img.onload = function() {
+                    this.classList.remove('opacity-0');
+                    this.classList.add('opacity-100');
+                }
+                // 如果图片已经缓存
+                if (img.complete) {
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

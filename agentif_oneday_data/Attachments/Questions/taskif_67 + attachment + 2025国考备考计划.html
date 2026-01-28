@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年国家公务员考试备考计划</title>
+    <script src="https://cdn.tailwindcss.com/3.3.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .highlight {
+            background-color: rgba(59, 130, 246, 0.2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            width: 2px;
+            height: calc(100% - 16px);
+            background-color: #e2e8f0;
+        }
+        
+        .timeline-item:last-child:after {
+            display: none;
+        }
+        
+        .print-button {
+            transition: all 0.3s ease;
+        }
+        
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .glassmorphism {
+                background: white;
+                backdrop-filter: none;
+                box-shadow: none;
+                border: none;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold text-blue-600">
+                <i class="fas fa-graduation-cap mr-2"></i>2025国考备考
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#overview" class="text-gray-600 hover:text-blue-600 transition-colors">备考总览</a>
+                <a href="#plan" class="text-gray-600 hover:text-blue-600 transition-colors">阶段计划</a>
+                <a href="#focus" class="text-gray-600 hover:text-blue-600 transition-colors">核心科目</a>
+                <a href="#resources" class="text-gray-600 hover:text-blue-600 transition-colors">学习资源</a>
+                <a href="#tips" class="text-gray-600 hover:text-blue-600 transition-colors">注意事项</a>
+            </div>
+            <button onclick="window.print()" class="print-button bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg no-print">
+                <i class="fas fa-print mr-2"></i>打印计划
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 标题区 -->
+        <section class="text-center mb-16 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">2025年国家公务员考试备考计划</h1>
+            <p class="text-xl text-gray-600">科学规划 · 高效备考 · 成功上岸</p>
+        </section>
+
+        <!-- 备考总览 -->
+        <section id="overview" class="glassmorphism p-8 mb-12 animate-fade-in delay-100">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                    <i class="fas fa-list-check"></i>
+                </div>
+                一、备考总览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="text-blue-600 text-2xl mb-2">
+                        <i class="fas fa-calendar-days"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">备考周期</h3>
+                    <p class="text-gray-600">2025年8月1日-2025年12月31日</p>
+                    <p class="text-gray-600">共5个月，约150天</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="text-blue-600 text-2xl mb-2">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">目标分数</h3>
+                    <p class="text-gray-600">行测70+，申论65+</p>
+                    <p class="text-gray-600">总分135+</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="text-blue-600 text-2xl mb-2">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">核心科目</h3>
+                    <p class="text-gray-600">行政职业能力测验</p>
+                    <p class="text-gray-600">申论（分类分级考试）</p>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 p-6 rounded-lg mb-6">
+                <h3 class="text-xl font-semibold text-blue-800 mb-3">备考阶段</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full">基础夯实（8-9月）</span>
+                    <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full">强化突破（10-11月中）</span>
+                    <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full">冲刺模拟（11月中-12月）</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 阶段学习计划 -->
+        <section id="plan" class="glassmorphism p-8 mb-12 animate-fade-in delay-200">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                二、阶段学习计划
+            </h2>
+            
+            <!-- 第一阶段 -->
+            <div class="timeline-item">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-2">第一阶段：基础夯实期（8月1日-9月30日）</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-semibold text-blue-700 mb-2">阶段目标：</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>掌握行测6大模块（政治理论、常识判断、言语理解、数量关系、判断推理、资料分析）基础理论</li>
+                            <li>理解申论3类试卷（中央综合管理类、市地综合管理类、行政执法类）命题差异</li>
+                            <li>建立知识框架，完成基础习题训练</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-semibold text-lg mb-3">每日学习安排（建议6-8小时）</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden mb-4">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">时间段</th>
+                                    <th class="py-3 px-4 text-left">学习内容</th>
+                                    <th class="py-3 px-4 text-left">时长</th>
+                                    <th class="py-3 px-4 text-left">备注</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="py-3 px-4">08:30-10:00</td>
+                                    <td class="py-3 px-4">政治理论专项学习</td>
+                                    <td class="py-3 px-4">1.5h</td>
+                                    <td class="py-3 px-4">重点：二十大报告、新发展理念</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4">10:15-12:00</td>
+                                    <td class="py-3 px-4">行测模块轮学（言语/判断/资料）</td>
+                                    <td class="py-3 px-4">1.75h</td>
+                                    <td class="py-3 px-4">每日1个模块，循环推进</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">14:00-15:30</td>
+                                    <td class="py-3 px-4">行测模块轮学（数量/常识）</td>
+                                    <td class="py-3 px-4">1.5h</td>
+                                    <td class="py-3 px-4">数量关系侧重基础题型</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4">15:45-17:15</td>
+                                    <td class="py-3 px-4">申论理论学习</td>
+                                    <td class="py-3 px-4">1.5h</td>
+                                    <td class="py-3 px-4">分类学习归纳概括/提出对策等</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">19:00-20:30</td>
+                                    <td class="py-3 px-4">当日知识点复盘+习题训练</td>
+                                    <td class="py-3 px-4">1.5h</td>
+                                    <td class="py-3 px-4">使用《行测5000题》基础篇</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-700 mb-2">阶段成果检验：</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>9月底完成2023年国考真题（副省级）模考，目标行测60+，申论55+</li>
+                            <li>整理各模块知识思维导图（重点标注政治理论核心考点）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二阶段 -->
+            <div class="timeline-item">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-2">第二阶段：强化突破期（10月1日-11月15日）</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-semibold text-blue-700 mb-2">阶段目标：</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>行测专项突破，提升解题速度（言语80%+、判断85%+、资料90%+正确率）</li>
+                            <li>申论分题型专项训练，掌握不同类别试卷答题技巧</li>
+                            <li>开始模拟考试，适应考试节奏</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-semibold text-lg mb-3">每日学习安排（建议7-9小时）</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden mb-4">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">时间段</th>
+                                    <th class="py-3 px-4 text-left">学习内容</th>
+                                    <th class="py-3 px-4 text-left">时长</th>
+                                    <th class="py-3 px-4 text-left">备注</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="py-3 px-4">08:30-10:30</td>
+                                    <td class="py-3 px-4">行测专项刷题（按模块分组）</td>
+                                    <td class="py-3 px-4">2h</td>
+                                    <td class="py-3 px-4">每组40题，计时训练</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4">10:45-12:15</td>
+                                    <td class="py-3 px-4">行测错题分析+方法优化</td>
+                                    <td class="py-3 px-4">1.5h</td>
+                                    <td class="py-3 px-4">建立错题本，标注错误类型</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">14:00-16:00</td>
+                                    <td class="py-3 px-4">申论专项训练（1小题+1作文框架）</td>
+                                    <td class="py-3 px-4">2h</td>
+                                    <td class="py-3 px-4">按岗位类型选择对应真题</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4">16:15-17:45</td>
+                                    <td class="py-3 px-4">政治理论与时政热点结合学习</td>
+                                    <td class="py-3 px-4">1.5h</td>
+                                    <td class="py-3 px-4">重点学习2024年1-10月时政</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">19:00-21:00</td>
+                                    <td class="py-3 px-4">全真模拟考试（行测/申论交替）</td>
+                                    <td class="py-3 px-4">2h</td>
+                                    <td class="py-3 px-4">每周2次，使用近5年国考真题</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-700 mb-2">阶段成果检验：</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>每周模考行测稳定在65+，申论60+</li>
+                            <li>完成专项突破：数量关系复杂题型、申论应用文写作</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三阶段 -->
+            <div class="timeline-item">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-2">第三阶段：冲刺模拟期（11月16日-12月31日）</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-semibold text-blue-700 mb-2">阶段目标：</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>行测套题训练，提升答题策略（时间分配、取舍技巧）</li>
+                            <li>申论全真写作，优化卷面与表达</li>
+                            <li>调整作息，适应考试生物钟</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-semibold text-lg mb-3">每日学习安排（建议6-7小时）</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden mb-4">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">时间段</th>
+                                    <th class="py-3 px-4 text-left">学习内容</th>
+                                    <th class="py-3 px-4 text-left">时长</th>
+                                    <th class="py-3 px-4 text-left">备注</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="py-3 px-4">08:30-11:00</td>
+                                    <td class="py-3 px-4">行测全真模考（含涂卡）</td>
+                                    <td class="py-3 px-4">2.5h</td>
+                                    <td class="py-3 px-4">严格按照考试时间进行</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-3 px-4">14:00-17:00</td>
+                                    <td class="py-3 px-4">申论全真模考</td>
+                                    <td class="py-3 px-4">3h</td>
+                                    <td class="py-3 px-4">完整书写作文，注意卷面整洁</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">19:00-21:00</td>
+                                    <td class="py-3 px-4">试卷分析+错题复盘+知识点补漏</td>
+                                    <td class="py-3 px-4">2h</td>
+                                    <td class="py-3 px-4">重点突破高频错题模块</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-700 mb-2">考前一周调整：</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>每日上午9:00-11:00行测模考，下午14:00-17:00申论模考</li>
+                            <li>减少刷题量，回归基础理论与核心考点</li>
+                            <li>调整作息，保证8小时睡眠</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心科目学习重点 -->
+        <section id="focus" class="glassmorphism p-8 mb-12 animate-fade-in delay-300">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                三、核心科目学习重点
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 行测专项突破 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4">行测专项突破</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">1. 政治理论（新增重点）</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>核心考点：中国式现代化、高质量发展、共同富裕、新发展格局</li>
+                                <li>学习资源：《二十大报告辅导读本》、学习强国时政专栏</li>
+                                <li>备考方法：构建理论框架+时政热点结合分析</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">2. 言语理解与表达</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>重点题型：主旨概括、意图判断、逻辑填空</li>
+                                <li>提升技巧：片段阅读抓关联词，逻辑填空积累高频成语</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">3. 判断推理</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>重点题型：图形推理（数量类/位置类）、逻辑判断（加强削弱）</li>
+                                <li>提升技巧：总结图形规律思维导图，强化论证逻辑分析</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">4. 资料分析</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>核心公式：增长率、比重、平均数相关计算</li>
+                                <li>提速技巧：截位直除、分数比较、快速找数训练</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 申论分类突破 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4">申论分类突破</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">1. 中央机关综合管理类</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>重点题型：综合分析、文章论述（侧重理论高度）</li>
+                                <li>备考策略：关注政策文件，提升理论分析能力</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">2. 市地级以下综合管理类</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>重点题型：贯彻执行、提出对策（侧重基层实务）</li>
+                                <li>备考策略：学习基层治理案例，强化对策可行性</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-700 mb-2">3. 行政执法类</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>重点题型：应用文写作（通知/讲话稿）、依法办事能力</li>
+                                <li>备考策略：熟悉行政执法流程，规范表达用语</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习资源推荐 -->
+        <section id="resources" class="glassmorphism p-8 mb-12">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                    <i class="fas fa-book"></i>
+                </div>
+                四、学习资源推荐
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center">
+                        <i class="fas fa-book mr-2"></i>教材
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>《2025国考行测模块宝典》（粉笔）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>《申论的规矩》（粉笔）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>《政治理论专项教材》（华图）</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center">
+                        <i class="fas fa-file-alt mr-2"></i>真题
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>近10年国考真题（分模块+套题）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>2024-2025年联考真题（模拟训练）</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center">
+                        <i class="fas fa-mobile-alt mr-2"></i>APP/工具
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>粉笔APP（模考+题库）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>学习强国（时政积累）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-blue-500 mt-1 mr-2"></i>
+                            <span>人民日报评论（申论素材）</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 备考注意事项 -->
+        <section id="tips" class="glassmorphism p-8 mb-12">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                五、备考注意事项
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-blue-700 mb-1">定期复盘</h4>
+                                <p class="text-gray-700">每周日晚进行周总结，调整下一周学习计划</p>
+                            </div>
+                        </li>
+                        
+                        <li class="flex items-start">
+                            <div class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-blue-700 mb-1">劳逸结合</h4>
+                                <p class="text-gray-700">每周休息1天，每日保证30分钟运动</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-blue-700 mb-1">心态管理</h4>
+                                <p class="text-gray-700">设置阶段性小目标，避免焦虑</p>
+                            </div>
+                        </li>
+                        
+                        <li class="flex items-start">
+                            <div class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-blue-700 mb-1">信息更新</h4>
+                                <p class="text-gray-700">关注国家公务员局官网，及时获取考试动态</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 月度学习进度表 -->
+        <section class="glassmorphism p-8 mb-12">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                六、月度学习进度表
+            </h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="py-3 px-4 text-left">月份</th>
+                            <th class="py-3 px-4 text-left">学习重点</th>
+                            <th class="py-3 px-4 text-left">目标成果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="py-3 px-4 font-medium">8月</td>
+                            <td class="py-3 px-4">政治理论基础+行测模块学习</td>
+                            <td class="py-3 px-4">完成政治理论框架构建</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-3 px-4 font-medium">9月</td>
+                            <td class="py-3 px-4">申论理论+基础习题训练</td>
+                            <td class="py-3 px-4">行测各模块正确率达70%</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">10月</td>
+                            <td class="py-3 px-4">专项突破+真题训练</td>
+                            <td class="py-3 px-4">行测模考65+，申论60+</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-3 px-4 font-medium">11月</td>
+                            <td class="py-3 px-4">全真模拟+错题复盘</td>
+                            <td class="py-3 px-4">行测模考70+，申论65+</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">12月</td>
+                            <td class="py-3 px-4">冲刺训练+状态调整</td>
+                            <td class="py-3 px-4">保持稳定发挥，适应考试节奏</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-blue-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-blue-200">© 2025 国家公务员考试备考计划</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://space.coze.cn" class="text-blue-200 hover:text-white transition-colors">created by coze space</a>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-blue-300 text-sm">
+                页面内容均由 AI 生成，仅供参考
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.animate-fade-in');
+            elements.forEach(el => {
+                el.style.opacity = '0';
+            });
+            
+            setTimeout(() => {
+                elements.forEach(el => {
+                    el.style.opacity = '1';
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京华寻梦 - 上海至北京交互式旅游计划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Neutrals -->
+    <!-- Application Structure Plan: The application is structured as a single-page dashboard with a sticky navigation bar for easy access to different planning modules. This design transforms the linear report into a task-oriented tool. The key sections are: 1. **Hero/Intro**: A visually appealing welcome. 2. **Planner**: An interactive module combining transportation comparison and a dynamic budget calculator. This consolidates pre-trip decisions into one powerful section. 3. **Itinerary**: A tab-based interface for daily plans, which breaks down the long schedule into digestible, user-selectable chunks, improving navigation and focus. 4. **Checklist**: A practical, actionable summary of appendix info. This structure prioritizes user interaction and non-linear exploration, making trip planning more efficient and engaging than reading a static document. -->
+    <!-- Visualization & Content Choices: 
+        - **Transportation Comparison**: Report's static table -> Goal: Compare -> Viz: Interactive side-by-side cards -> Interaction: Click to reveal details -> Justification: More engaging and less cluttered than a table -> Method: Tailwind CSS + Vanilla JS.
+        - **Budget Estimation**: Report's static table -> Goal: Personalize budget -> Viz: Doughnut Chart + Control Buttons -> Interaction: Click buttons ('经济', '舒适', '豪华') to update chart and totals -> Justification: Transforms data into an interactive tool for immediate feedback -> Library: Chart.js.
+        - **Daily Itinerary**: Report's linear text -> Goal: Organize schedule -> Viz: Tabbed interface -> Interaction: Click day tabs to switch content -> Justification: Improves scannability and reduces cognitive load -> Method: Tailwind CSS + Vanilla JS.
+        - **Practical Info**: Report's appendix -> Goal: Actionable prep -> Viz: Icon-based checklist -> Interaction: Static but visually organized for clarity -> Justification: Converts passive text into a quick-reference preparation tool -> Method: Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #FBF9F1;
+            color: #3D405B;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #E07A5F;
+            border-bottom-color: #E07A5F;
+        }
+        .tab-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #3D405B;
+            color: #FFFFFF;
+        }
+        .budget-btn {
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+        }
+        .budget-btn:hover {
+            transform: translateY(-2px);
+        }
+        .budget-btn.active {
+            background-color: #E07A5F;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #3D405B;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #81B29A;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-[#3D405B]">京华寻梦</div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#planner" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">智能规划</a>
+                <a href="#itinerary" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">每日行程</a>
+                <!-- <a href="#checklist" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">行前清单</a> -->
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="h-[60vh] md:h-[80vh] bg-cover bg-center flex items-center justify-center text-white" style="background-image: url('https://images.unsplash.com/photo-1599282297009-4c7018c1a603?q=80&w=1920&auto=format&fit=crop');">
+            <div class="bg-black/50 p-8 md:p-12 rounded-lg text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">五日四晚 · 北京深度文化之旅</h1>
+                <p class="text-lg md:text-2xl">从上海出发，探索帝都的古今魅力</p>
+                <p class="mt-2 text-md md:text-lg">旅行日期: 7月1日 - 7月5日</p>
+            </div>
+        </section>
+
+        <!-- Planner Section -->
+        <section id="planner" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">智能规划</h2>
+                <p class="section-subtitle">轻松搞定交通与预算</p>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <!-- Transportation -->
+                    <div class="bg-[#FBF9F1] p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-6 text-center text-[#3D405B]">交通对比：高铁 vs. 飞机</h3>
+                        <p class="text-center text-gray-600 mb-8">从上海到北京，选择最适合你的出行方式。高铁以其稳定性和便利性成为我们的首选推荐。</p>
+                        <div class="flex justify-around items-center gap-4">
+                            <div class="text-center p-4 rounded-lg w-1/2">
+                                <span class="text-5xl">🚄</span>
+                                <h4 class="font-bold text-xl mt-2 text-[#81B29A]">高速铁路</h4>
+                                <p class="text-sm text-gray-500 mt-1">时间与性价比之选</p>
+                                <ul class="text-left text-sm mt-4 space-y-2 list-disc list-inside">
+                                    <li><strong>价格:</strong> ¥500 - ¥670</li>
+                                    <li><strong>总耗时:</strong> 约 5 - 6.5 小时</li>
+                                    <li><strong>优点:</strong> 准点率高，直达市区</li>
+                                </ul>
+                            </div>
+                            <div class="text-center p-4 rounded-lg w-1/2">
+                                <span class="text-5xl">✈️</span>
+                                <h4 class="font-bold text-xl mt-2 text-gray-600">航空旅行</h4>
+                                <p class="text-sm text-gray-500 mt-1">速度的代价</p>
+                                <ul class="text-left text-sm mt-4 space-y-2 list-disc list-inside">
+                                    <li><strong>价格:</strong> ¥900 - ¥1500+</li>
+                                    <li><strong>总耗时:</strong> 约 5 - 6 小时</li>
+                                    <li><strong>缺点:</strong> 易延误，机场通勤耗时</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Calculator -->
+                    <div class="bg-[#FBF9F1] p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-6 text-center text-[#3D405B]">预算计算器</h3>
+                        <p class="text-center text-gray-600 mb-8">选择你的旅行风格，即时查看预算分配。我们推荐“舒适型”以获得最佳体验。</p>
+                        <div class="flex justify-center space-x-2 md:space-x-4 mb-6">
+                            <button class="budget-btn px-4 py-2 rounded-full text-sm md:text-base bg-white shadow" data-type="economy">经济型</button>
+                            <button class="budget-btn px-4 py-2 rounded-full text-sm md:text-base bg-white shadow active" data-type="comfort">舒适型</button>
+                            <button class="budget-btn px-4 py-2 rounded-full text-sm md:text-base bg-white shadow" data-type="luxury">豪华型</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                        <div class="text-center mt-6">
+                            <span class="text-gray-600">预估总计:</span>
+                            <span id="totalBudget" class="text-3xl font-bold text-[#E07A5F]">¥ 7,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Itinerary Section -->
+        <section id="itinerary" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">每日行程</h2>
+                <p class="section-subtitle">沉浸式探索北京的古今脉络</p>
+                
+                <!-- Tabs -->
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                    <button class="tab-btn px-4 py-2 rounded-full text-sm md:text-base active" data-tab="day1">Day 1: 抵达与初探</button>
+                    <button class="tab-btn px-4 py-2 rounded-full text-sm md:text-base" data-tab="day2">Day 2: 皇城遗梦</button>
+                    <button class="tab-btn px-4 py-2 rounded-full text-sm md:text-base" data-tab="day3">Day 3: 壮丽雄关</button>
+                    <button class="tab-btn px-4 py-2 rounded-full text-sm md:text-base" data-tab="day4">Day 4: 皇家园林</button>
+                    <button class="tab-btn px-4 py-2 rounded-full text-sm md:text-base" data-tab="day5">Day 5: 奥运辉煌</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="tab-content" class="bg-white p-6 md:p-10 rounded-xl shadow-lg">
+                    <!-- Day 1 -->
+                    <div class="tab-pane active" id="day1">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <img src= "https://img.redocn.com/sheying/20191120/beijingwangfujingbuxingjieyejing_10685051.jpg.400.jpg" alt="王府井步行街夜景" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#3D405B] mb-4">抵达与初探 - 中轴线的夜之序章</h3>
+                                <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                    <li><strong>下午:</strong> 乘坐高铁抵达北京南站，入住王府井附近酒店。</li>
+                                    <li><strong>傍晚:</strong> 漫步王府井步行街，感受北京的商业活力。</li>
+                                    <li><strong>晚上:</strong> 探索前门大街与大栅栏，体验老北京的市井风情。</li>
+                                </ul>
+                                <div class="mt-6 bg-[#F2CC8F]/30 p-4 rounded-lg">
+                                    <h4 class="font-bold text-[#3D405B]">编辑之选 💡</h4>
+                                    <p class="text-sm text-gray-800 mt-1">别错过大栅栏胡同，这里汇集了众多百年老店，是体验地道京味商业文化的核心区。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Day 2 -->
+                    <div class="tab-pane hidden" id="day2">
+                         <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <img src= "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/depositphotos261018554xl-1719201100551.jpg" alt="故宫太和殿" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#3D405B] mb-4">皇城遗梦 - 紫禁之巅</h3>
+                                <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                    <li><strong>上午:</strong> 参观天安门广场，感受共和国的心脏。</li>
+                                    <li><strong>全天:</strong> 深度游览故宫博物院，沿中轴线探寻紫禁城的秘密。</li>
+                                    <li><strong>傍晚:</strong> 登上景山公园万春亭，俯瞰故宫全景与日落。</li>
+                                </ul>
+                                <div class="mt-6 bg-[#F2CC8F]/30 p-4 rounded-lg">
+                                    <h4 class="font-bold text-[#3D405B]">编辑之选 💡</h4>
+                                    <p class="text-sm text-gray-800 mt-1">从故宫神武门出来后，别忘了去护城河边拍摄角楼的经典倒影，是摄影爱好者的必到之处。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Day 3 -->
+                    <div class="tab-pane hidden" id="day3">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQjZqkRZJTwDOZjXC_IR6Skal93vn2WUym1A&s" alt="慕田峪长城" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#3D405B] mb-4">壮丽雄关 - 巨龙之脊</h3>
+                                <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                    <li><strong>交通:</strong> 乘坐旅游专线巴士直达慕田峪长城，省时省力。</li>
+                                    <li><strong>游览:</strong> 推荐乘坐缆车上、滑道下，轻松体验长城的雄伟。</li>
+                                    <li><strong>路线:</strong> 从14号敌楼步行至6号敌楼，精华段风景秀美。</li>
+                                </ul>
+                                <div class="mt-6 bg-[#F2CC8F]/30 p-4 rounded-lg">
+                                    <h4 class="font-bold text-[#3D405B]">编辑之选 💡</h4>
+                                    <p class="text-sm text-gray-800 mt-1">为避开夏日酷暑，可以考虑参加夏季限定的“夜游长城”活动，体验别样风情。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Day 4 -->
+                    <div class="tab-pane hidden" id="day4">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEe4vy1nKT6yoyqeFs-jgNEnRHytrkDuXSzw&s" alt="颐和园十七孔桥" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#3D405B] mb-4">皇家园林与天人对话</h3>
+                                <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                    <li><strong>上午:</strong> 游览颐和园，推荐在昆明湖上泛舟，欣赏湖光山色。</li>
+                                    <li><strong>下午:</strong> 参观天坛公园，欣赏祈年殿的宏伟建筑。</li>
+                                    <li><strong>晚上:</strong> 逛南锣鼓巷，体验北京胡同的现代活力。</li>
+                                </ul>
+                                <div class="mt-6 bg-[#F2CC8F]/30 p-4 rounded-lg">
+                                    <h4 class="font-bold text-[#3D405B]">编辑之选 💡</h4>
+                                    <p class="text-sm text-gray-800 mt-1">在天坛公园，除了建筑，更值得体验的是当地市民的日常生活，充满了鲜活的市井气息。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Day 5 -->
+                    <div class="tab-pane hidden" id="day5">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <img src="https://lh5.googleusercontent.com/proxy/Kbkahl7EGCjpQg5R2-OB7jeMUWDmZym0uVm4dpOz_7sTuu6EZVk-geqInlbx2OW-42cvBswEoy1nCekUotUtzxrO5cU8RpjRtJEgyUO7sXWAaOlh7QJ7oAKrP9HPz4uJiRkgIr6YFQ" alt="鸟巢水立方夜景" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#3D405B] mb-4">奥运辉煌与告别</h3>
+                                <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                    <li><strong>上午:</strong> 参观奥林匹克公园，欣赏“鸟巢”与“水立方”的现代建筑奇迹。</li>
+                                    <li><strong>中午:</strong> 整理行装，办理退房。</li>
+                                    <li><strong>下午:</strong> 前往车站或机场，结束愉快的北京之旅。</li>
+                                </ul>
+                                <div class="mt-6 bg-[#F2CC8F]/30 p-4 rounded-lg">
+                                    <h4 class="font-bold text-[#3D405B]">编辑之选 💡</h4>
+                                    <p class="text-sm text-gray-800 mt-1">鸟巢和水立方的夜景极为震撼，如果时间允许，强烈建议在夜晚前往，为旅程画上完美句点。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Checklist Section -->
+        <!-- <section id="checklist" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">行前清单</h2>
+                <p class="section-subtitle">备好行囊，从容出发</p>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-[#FBF9F1] p-8 rounded-xl shadow-lg">
+                        <span class="text-5xl">📱</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2">必备应用</h3>
+                        <p class="text-gray-600">支付宝/微信 (支付), 高德/百度地图 (导航), 亿通行 (地铁)。</p>
+                    </div>
+                    <div class="bg-[#FBF9F1] p-8 rounded-xl shadow-lg">
+                        <span class="text-5xl">👕</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2">7月着装</h3>
+                        <p class="text-gray-600">轻薄透气的夏装，舒适的步行鞋，备好防晒霜、太阳镜和晴雨伞。</p>
+                    </div>
+                    <div class="bg-[#FBF9F1] p-8 rounded-xl shadow-lg">
+                        <span class="text-5xl">🎟️</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2">预订是关键</h3>
+                        <p class="text-gray-600">务必提前7天在线实名预订故宫门票，并预约天安门广场参观。</p>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+    </main>
+
+    <footer class="bg-[#3D405B] text-white text-center py-6">
+        <p>&copy; 2024 京华寻梦. 祝您旅途愉快！</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Budget Calculator Logic
+            const budgetData = {
+                economy: {
+                    total: '¥ 4,000',
+                    values: [1200, 1200, 120, 300, 800, 380],
+                },
+                comfort: {
+                    total: '¥ 7,000',
+                    values: [1200, 2800, 120, 350, 1600, 930],
+                },
+                luxury: {
+                    total: '¥ 14,000+',
+                    values: [2000, 6000, 400, 400, 3000, 2200],
+                }
+            };
+
+            const budgetLabels = ['交通', '住宿', '市内交通', '门票', '餐饮', '备用金'];
+            const budgetColors = ['#F4A261', '#E76F51', '#81B29A', '#F2CC8F', '#2A9D8F', '#E9C46A'];
+            const totalBudgetEl = document.getElementById('totalBudget');
+            const budgetButtons = document.querySelectorAll('.budget-btn');
+            
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            const budgetChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: budgetLabels,
+                    datasets: [{
+                        data: budgetData.comfort.values,
+                        backgroundColor: budgetColors,
+                        borderColor: '#FBF9F1',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#3D405B',
+                                font: {
+                                    size: 12,
+                                    family: "'Noto Sans SC', sans-serif"
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            budgetButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    budgetButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const type = button.dataset.type;
+                    const data = budgetData[type];
+                    
+                    budgetChart.data.datasets[0].data = data.values;
+                    budgetChart.update();
+                    totalBudgetEl.textContent = data.total;
+                });
+            });
+
+            // Itinerary Tabs Logic
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const tabId = button.dataset.tab;
+                    
+                    tabPanes.forEach(pane => {
+                        if (pane.id === tabId) {
+                            pane.classList.remove('hidden');
+                            pane.classList.add('active');
+                        } else {
+                            pane.classList.add('hidden');
+                            pane.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            // Smooth scroll for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
