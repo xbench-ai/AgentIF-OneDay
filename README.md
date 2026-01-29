@@ -62,7 +62,7 @@ We provide a comprehensive LLM-as-a-Judge evaluation script to reproduce the res
 If you find this benchmark useful for your research, please cite our paper:
 
 ```bibtex
-@misc{chen2026agentifonedaytasklevelinstructionfollowingbenchmark, 
+@misc{chen2026agentifoneday, 
        title={AgentIF-OneDay: A Task-level Instruction-Following Benchmark for General AI Agents in Daily Scenarios}, 
        author={Kaiyuan Chen and Qimin Wu and Taiyu Hou and Tianhao Tang and Xueyu Hu and Yuchen Hou and Bikun Li and Chengming Qian and Guoyin Wang and Haolin Chen and Haotong Tian and Haoye Zhang and Haoyu Bian and Hongbing Pan and Hongkang Zhang and Hongyi Zhou and Jiaqi Cai and Jiewu Rao and Jiyuan Ren and Keduan Huang and Lucia Zhu Huang and Mingyu Yuan and Naixu Guo and Qicheng Tang and Qinyan Zhang and Shuai Chen and Siheng Chen and Ting Ting Li and Xiaoxing Guo and Yaocheng Zuo and Yaoqi Guo and Yinan Wang and Yinzhou Yu and Yize Wang and Yuan Jiang and Yuan Tian and Yuanshuo Zhang and Yuxuan Liu and Yvette Yan Zeng and Zenyu Shan and Zihan Yin and Xiaobo Hu and Yang Liu and Yixin Ren and Yuan Gong}, 
        year={2026}, 
